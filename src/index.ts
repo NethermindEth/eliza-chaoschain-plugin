@@ -2,18 +2,32 @@ import { registerChaosAgent } from "./chaosAgent";
 import { startWebSocketListener } from "./websocketHandler";
 import { proposeTransaction } from "./transaction";
 import { proposeAlliance } from "./alliances";
-import { IAgentRuntime } from "@elizaos/core";
+
+async function getRuntime() {
+  try {
+      const { getAgentRuntime } = require("@elizaos/core");
+      return await getAgentRuntime();  // Fetch runtime dynamically from ElizaOS
+  } catch (error) {
+      console.error("[ChaosChain] Failed to fetch ElizaOS runtime:", error);
+      return null;
+  }
+}
 
 // Main function to initialize Eliza plugin
-export async function initChaosPlugin(runtime: IAgentRuntime) {
-    console.log("[ChaosChain] Initializing Eliza plugin...");
-    
-    // Step 1: Register Eliza agent with ChaosChain
-    await registerChaosAgent(runtime);
-    
-    // Step 2: Start WebSocket listener to handle real-time events
-    await startWebSocketListener(runtime);
+export async function initChaosPlugin() {
+  const runtime = await getRuntime();
+  if (!runtime) {
+      console.error("[ChaosChain] ElizaOS runtime not found. Plugin will not start.");
+      return;
+  }
+
+  console.log("[ChaosChain] Initializing with ElizaOS runtime...");
+  await registerChaosAgent(runtime);
+  await startWebSocketListener(runtime);
 }
+
+// Auto-start when running inside ElizaOS
+initChaosPlugin();
 
 // Export helper functions for external usage
 export { proposeTransaction, proposeAlliance };
