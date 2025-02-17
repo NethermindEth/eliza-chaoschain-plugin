@@ -1,26 +1,39 @@
 {
-  "name": "plugin-chaoschain",
+  "name": "@elizaos/plugin-chaoschain",
   "version": "1.438.0",
-  "description": "A template for a nodejs application, using typescript",
-  "main": "dist/index.js",
-  "author": "",
-  "license": "MIT",
-  "type": "commonjs",
+  "description": "A plugin for chaoschain",
+  "type": "module",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        "./package.json": "./package.json",
+        ".": {
+            "import": {
+                "@elizaos/source": "./src/index.ts",
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            }
+        }
+    },
+    "files": [
+        "dist"
+    ],
   "scripts": {
-    "dev": "nodemon --watch src/**/*.ts --exec ts-node ./src/app.ts",
-    "build": "tsc",
-    "start": "NODE_OPTIONS='--loader ts-node/esm' npx ts-node src/index.ts",
-    "lint": "eslint --fix --quiet src/**/*.ts",
-    "format": "prettier --loglevel silent --write src/**/*.ts",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "build": "tsup src/index.ts --format esm --dts",
+    "dev": "tsup --format esm --dts --watch",
+    "lint": "biome lint .",
+    "lint:fix": "biome check --apply .",
+    "format": "biome format .",
+    "format:fix": "biome format --write ."
   },
   "dependencies": {
     "@elizaos/core": "^0.25.6-alpha.1",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
-    "ws": "^8.18.0"
+    "sharp": "^0.33.5",
+    "ws": "^8.18.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -36,6 +49,7 @@
     "prettier": "^3.5.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "tsup": "^8.3.6",
     "typescript": "^5.7.3",
     "typescript-eslint-parser": "^22.0.0"
   }

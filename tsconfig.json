@@ -1,42 +1,26 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "moduleResolution": "Node",
-      "pretty": true,
-      "resolveJsonModule": true,
-      "sourceMap": true,
-      "target": "es2021",
-      "outDir": "./dist",
-      "experimentalDecorators": true,
-      "strict": true,
-      "baseUrl": "./src",
-      "paths": {
-        "ai": ["src/patches/ai.d.ts"]
-      },
-      "skipLibCheck": true,
-      "noImplicitAny": false
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "pretty": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "target": "es2020",
+    "outDir": "plugin/dist",
+    "experimentalDecorators": true,
+    "strict": true,
+    "baseUrl": "plugin",
+    "paths": {
+      "ai": ["plugin/patches/ai.d.ts"],
+      "@elizaos/plugin-chaoschain": ["plugin/src"]
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "src/**/*.spec.ts"]
-  }
-  
-
-
-//   {
-//     "compilerOptions": {
-//       "target": "ES6",
-//       "module": "commonjs",
-//       "outDir": "dist",
-//       "rootDir": "src",
-//       "strict": true,
-//       "skipLibCheck": true,
-//       "baseUrl": ".",
-//       "paths": {
-//         "ai": ["types/patches/ai.d.ts"],
-//         "@/*": ["./src/*"]
-//       },
-//       "esModuleInterop": true
-//     },
-//     "include": ["src"]
-//   }
-  
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "typeRoots": ["./src/types", "./node_modules/@types"]
+  },
+  "include": ["plugin/**/*.ts", "src/**/*.ts"],
+  "exclude": ["plugin/node_modules", "plugin/**/*.spec.ts"],
+  "outDir": "dist",
+  "rootDir": "./src",
+  "declaration": true
+}
