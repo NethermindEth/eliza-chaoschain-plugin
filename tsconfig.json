@@ -1,23 +1,25 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
+      "module": "ESNext",
       "moduleResolution": "Node",
       "pretty": true,
       "resolveJsonModule": true,
       "sourceMap": true,
-      "target": "es2021",
-      "outDir": "./dist",
+      "target": "es2020",
+      "outDir": "plugin/dist",
       "experimentalDecorators": true,
       "strict": true,
-      "baseUrl": "./src",
+      "baseUrl": "plugin",
       "paths": {
-        "ai": ["src/patches/ai.d.ts"]
+        "ai": ["plugin/patches/ai.d.ts"],
+        "@elizaos/plugin-chaoschain": ["plugin/src"]
       },
       "skipLibCheck": true,
-      "noImplicitAny": false
+      "noImplicitAny": false,
+      "typeRoots": ["./src/types", "./node_modules/@types"]
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "src/**/*.spec.ts"]
+    "include": ["plugin/**/*.ts", "src/**/*.ts"],
+    "exclude": ["plugin/node_modules", "plugin/**/*.spec.ts"]
   }
   
 

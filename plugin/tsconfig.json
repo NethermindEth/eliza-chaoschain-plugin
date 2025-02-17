@@ -1,0 +1,31 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+      "outDir": "dist",
+      "rootDir": "./src",
+      "declaration": true
+  },
+  "include": ["src"]
+}
+
+  
+
+
+//   {
+//     "compilerOptions": {
+//       "target": "ES6",
+//       "module": "commonjs",
+//       "outDir": "dist",
+//       "rootDir": "src",
+//       "strict": true,
+//       "skipLibCheck": true,
+//       "baseUrl": ".",
+//       "paths": {
+//         "ai": ["types/patches/ai.d.ts"],
+//         "@/*": ["./src/*"]
+//       },
+//       "esModuleInterop": true
+//     },
+//     "include": ["src"]
+//   }
+  
