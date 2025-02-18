@@ -21,13 +21,13 @@ importers:
         specifier: ^0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
       '@elizaos/plugin-chaoschain':
-        specifier: file:./plugin/
-        version: file:plugin(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)
+        specifier: file:./plugin/plugin-chaoschain
+        version: file:plugin/plugin-chaoschain(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)
       axios:
         specifier: ^1.7.9
         version: 1.7.9
       better-sqlite3:
-        specifier: ^11.8.1
+        specifier: ^11.6.0
         version: 11.8.1
       dotenv:
         specifier: ^16.4.7
@@ -45,6 +45,9 @@ importers:
         specifier: ^3.24.2
         version: 3.24.2
     devDependencies:
+      '@types/better-sqlite3':
+        specifier: ^7.6.12
+        version: 7.6.12
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -54,6 +57,9 @@ importers:
       '@types/ws':
         specifier: ^8.5.14
         version: 8.5.14
+      '@types/yargs':
+        specifier: ^17.0.33
+        version: 17.0.33
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.24.0
         version: 8.24.1(@typescript-eslint/parser@8.24.1(eslint@9.20.1)(typescript@5.7.3))(eslint@9.20.1)(typescript@5.7.3)
@@ -589,8 +595,8 @@ packages:
   '@elizaos/core@0.25.6-alpha.1':
     resolution: {integrity: sha512-JZEQfmyEDTyWtPyfAopG0Ztnnh5GqQxzdvJGGwWGAkVYO5uselQNiSeMDvuIsRArRHjQlLpg2cUqsv0Y3ngppA==}
 
-  '@elizaos/plugin-chaoschain@file:plugin':
-    resolution: {directory: plugin, type: directory}
+  '@elizaos/plugin-chaoschain@file:plugin/plugin-chaoschain':
+    resolution: {directory: plugin/plugin-chaoschain, type: directory}
 
   '@elizaos/plugin-image-generation@0.25.6-alpha.1':
     resolution: {integrity: sha512-TCvCxG9HdSm+IvxK235X2BI0FZHBn1Io1PRPwkG9ZA/IgJxUu7WFI7D+zQNoQyrbpLY8/+4Nzry7+XaDYHF2ew==}
@@ -3374,8 +3380,8 @@ packages:
       openai:
         optional: true
 
-  langsmith@0.3.7:
-    resolution: {integrity: sha512-wakN1hxGkm1JR2PpAV7fiT7oC99LKcgxiuUrYGZWPbuj7Y8EPF19F7VNr4B+hA219bfaeWTa4Lxy2YrtPSKnQA==}
+  langsmith@0.3.9:
+    resolution: {integrity: sha512-QSiMAfeplpcfQWI8vRgxZD4UcGiyCO9C5IgZlAm4nWbJICiv7YWwVMOZ0qsRvbFL+hL2DINY6Z+uyxd4qXJ4pw==}
     peerDependencies:
       openai: '*'
     peerDependenciesMeta:
@@ -5726,7 +5732,7 @@ snapshots:
       - ws
       - zod
 
-  '@elizaos/plugin-chaoschain@file:plugin(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)':
+  '@elizaos/plugin-chaoschain@file:plugin/plugin-chaoschain(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)':
     dependencies:
       '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
       axios: 1.7.9
@@ -6470,7 +6476,7 @@ snapshots:
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.19
-      langsmith: 0.3.7(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2))
+      langsmith: 0.3.9(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -9152,7 +9158,7 @@ snapshots:
     optionalDependencies:
       openai: 4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
 
-  langsmith@0.3.7(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)):
+  langsmith@0.3.9(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2

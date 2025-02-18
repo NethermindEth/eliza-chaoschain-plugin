@@ -1,8 +1,9 @@
 {
   "name": "plugin-chaoschain",
+  "version": "1.0.0",
   "type": "module",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "start": "node --loader ts-node/esm src/index.ts",
@@ -24,9 +25,9 @@
     "@elizaos/client-direct": "0.25.6-alpha.1",
     "@elizaos/client-telegram": "0.25.6-alpha.1",
     "@elizaos/core": "^0.25.6-alpha.1",
-    "@elizaos/plugin-chaoschain": "file:./plugin/",
+    "@elizaos/plugin-chaoschain": "file:./plugin/plugin-chaoschain",
     "axios": "^1.7.9",
-    "better-sqlite3": "^11.8.1",
+    "better-sqlite3": "^11.6.0",
     "dotenv": "^16.4.7",
     "sharp": "^0.33.5",
     "ws": "^8.18.0",
@@ -34,9 +35,11 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
     "@types/ws": "^8.5.14",
+    "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
     "eslint": "^9.20.1",
@@ -49,5 +52,23 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "typescript-eslint-parser": "^22.0.0"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "better-sqlite3",
+      "bigint-buffer",
+      "bigint-buffer",
+      "bufferutil",
+      "bufferutil",
+      "esbuild",
+      "esbuild",
+      "sharp",
+      "sharp",
+      "utf-8-validate",
+      "utf-8-validate"
+    ],
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
   }
 }

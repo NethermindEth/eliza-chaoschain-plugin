@@ -2,8 +2,6 @@ import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
 import { SqliteDatabaseAdapter } from "@elizaos/adapter-sqlite";
-import yargs from "yargs";
-import Database from "better-sqlite3";
 
 import {
   AgentRuntime,
@@ -21,7 +19,10 @@ import {
 } from "@elizaos/core";
 import { DirectClient } from "@elizaos/client-direct";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
-import chaoschainPlugin from "../plugin/dist/index.js";
+import chaoschainPlugin from "@elizaos/plugin-chaoschain";
+
+import yargs from "yargs";
+import Database from "better-sqlite3";
 
 import {
   Character,

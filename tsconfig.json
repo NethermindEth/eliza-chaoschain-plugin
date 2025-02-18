@@ -10,9 +10,11 @@
       "experimentalDecorators": true,
       "strict": true,
       "baseUrl": "plugin",
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
       "paths": {
         "ai": ["plugin/patches/ai.d.ts"],
-        "@elizaos/plugin-chaoschain": ["plugin/src"]
+        "@elizaos/plugin-chaoschain": ["plugin/plugin-chaoschain/src"]
       },
       "skipLibCheck": true,
       "noImplicitAny": false,

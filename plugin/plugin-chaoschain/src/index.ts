@@ -8,6 +8,8 @@ import {
   getDramaScoreAction,
   getAlliancesAction,
   getRecentInteractionsAction,
+  proposeAllianceAction,
+  getAgentStatusAction,
 } from "./actions";
 import { ChaoschainProvider } from "./providers";
 
@@ -25,6 +27,8 @@ const chaoschainPlugin: Plugin = {
     getDramaScoreAction,
     getAlliancesAction,
     getRecentInteractionsAction,
+    proposeAllianceAction,
+    getAgentStatusAction,
   ],
 };
 
