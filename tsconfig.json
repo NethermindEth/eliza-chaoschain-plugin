@@ -1,42 +1,22 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
-      "moduleResolution": "Node",
-      "pretty": true,
-      "resolveJsonModule": true,
-      "sourceMap": true,
-      "target": "es2021",
-      "outDir": "./dist",
-      "experimentalDecorators": true,
-      "strict": true,
-      "baseUrl": "./src",
-      "paths": {
-        "ai": ["src/patches/ai.d.ts"]
-      },
-      "skipLibCheck": true,
-      "noImplicitAny": false
+        "target": "ES2020",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "allowSyntheticDefaultImports": true
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "src/**/*.spec.ts"]
-  }
-  
-
-
-//   {
-//     "compilerOptions": {
-//       "target": "ES6",
-//       "module": "commonjs",
-//       "outDir": "dist",
-//       "rootDir": "src",
-//       "strict": true,
-//       "skipLibCheck": true,
-//       "baseUrl": ".",
-//       "paths": {
-//         "ai": ["types/patches/ai.d.ts"],
-//         "@/*": ["./src/*"]
-//       },
-//       "esModuleInterop": true
-//     },
-//     "include": ["src"]
-//   }
-  
+    "files": [],
+    "references": [
+        {
+            "path": "packages/core"
+        },
+        {
+            "path": "packages/client-slack"
+        }
+    ]
+}
