@@ -21,6 +21,7 @@ import {
   GetDramaScoreSchema,
   GetAlliancesSchema,
   GetRecentInteractionsSchema,
+  AllianceProposalSchema,
 } from "./schemas";
 
 import {
@@ -32,22 +33,17 @@ import {
   getDramaScoreTemplate,
   getAlliancesTemplate,
   getRecentInteractionsTemplate,
+  proposeAllianceTemplate,
 } from "./templates";
 import { z } from "zod";
 
-export type RegisterAgentContent = z.infer<typeof RegisterAgentSchema> &
-  Content;
-export const isRegisterAgentContent = (
-  obj: unknown
-): obj is RegisterAgentContent => {
+export type RegisterAgentContent = z.infer<typeof RegisterAgentSchema> & Content;
+export const isRegisterAgentContent = (obj: unknown): obj is RegisterAgentContent => {
   return RegisterAgentSchema.safeParse(obj).success;
 };
 
-export type GetNetworkStatusContent = z.infer<typeof GetNetworkStatusSchema> &
-  Content;
-export const isGetNetworkStatusContent = (
-  obj: unknown
-): obj is GetNetworkStatusContent => {
+export type GetNetworkStatusContent = z.infer<typeof GetNetworkStatusSchema> & Content;
+export const isGetNetworkStatusContent = (obj: unknown): obj is GetNetworkStatusContent => {
   return GetNetworkStatusSchema.safeParse(obj).success;
 };
 
@@ -57,56 +53,57 @@ export const isSubmitVoteContent = (obj: unknown): obj is SubmitVoteContent => {
 };
 
 export type ProposeBlockContent = z.infer<typeof ProposeBlockSchema> & Content;
-export const isProposeBlockContent = (
-  obj: unknown
-): obj is ProposeBlockContent => {
+export const isProposeBlockContent = (obj: unknown): obj is ProposeBlockContent => {
   return ProposeBlockSchema.safeParse(obj).success;
 };
 
-export type SocialInteractionContent = z.infer<typeof SocialInteractionSchema> &
-  Content;
-export const isSocialInteractionContent = (
-  obj: unknown
-): obj is SocialInteractionContent => {
+export type SocialInteractionContent = z.infer<typeof SocialInteractionSchema> & Content;
+export const isSocialInteractionContent = (obj: unknown): obj is SocialInteractionContent => {
   return SocialInteractionSchema.safeParse(obj).success;
 };
 
-export type GetDramaScoreContent = z.infer<typeof GetDramaScoreSchema> &
-  Content;
-export const isGetDramaScoreContent = (
-  obj: unknown
-): obj is GetDramaScoreContent => {
+export type GetDramaScoreContent = z.infer<typeof GetDramaScoreSchema> & Content;
+export const isGetDramaScoreContent = (obj: unknown): obj is GetDramaScoreContent => {
   return GetDramaScoreSchema.safeParse(obj).success;
 };
 
 export type GetAlliancesContent = z.infer<typeof GetAlliancesSchema> & Content;
-export const isGetAlliancesContent = (
-  obj: unknown
-): obj is GetAlliancesContent => {
+export const isGetAlliancesContent = (obj: unknown): obj is GetAlliancesContent => {
   return GetAlliancesSchema.safeParse(obj).success;
 };
 
-export type GetRecentInteractionsContent = z.infer<
-  typeof GetRecentInteractionsSchema
-> &
-  Content;
-export const isGetRecentInteractionsContent = (
-  obj: unknown
-): obj is GetRecentInteractionsContent => {
+export type GetRecentInteractionsContent = z.infer<typeof GetRecentInteractionsSchema> & Content;
+export const isGetRecentInteractionsContent = (obj: unknown): obj is GetRecentInteractionsContent => {
   return GetRecentInteractionsSchema.safeParse(obj).success;
+};
+
+export type AllianceProposalContent = z.infer<typeof AllianceProposalSchema> & Content;
+export const isAllianceProposalContent = (obj: unknown): obj is AllianceProposalContent => {
+  return AllianceProposalSchema.safeParse(obj).success;
 };
 
 /* REGISTER CHAOS AGENT */
 export const registerChaosAgentAction: Action = {
   name: "registerChaosAgent",
-  description:
-    "Register a new agent with ChaosChain. This call will store the authentication token for subsequent requests.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  description: "Register a new agent with ChaosChain. This call will store the authentication token for subsequent requests.",
+  similes: [
+   "Create a new agent",
+   "Register a new agent",
+   "Enroll a new agent",
+   "Sign up for a new agent",
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Register agent with name 'Pizza', personality ['dramatic', 'witty'], style 'sarcastic', stake_amount 1000, role 'validator'",
+          action: "REGISTER_AGENT",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -129,28 +126,21 @@ export const registerChaosAgentAction: Action = {
       template: registerChaosAgentTemplate,
     });
 
+
     const generatedParams = await generateObject({
       runtime,
       context: agentContext,
       modelClass: ModelClass.LARGE,
       schema: RegisterAgentSchema,
     });
+    
     if (!isRegisterAgentContent(generatedParams.object)) {
       elizaLogger.error("Invalid registration data format received");
-      if (callback)
-        callback({ text: "Invalid registration data format received" });
+      if (callback) callback({ text: "Invalid registration data format received" });
       return false;
     }
-
+    
     const result = generatedParams.object;
-    if (!result) {
-      if (callback) {
-        callback({
-          text: "Failed to extract registration parameters from input.",
-        });
-      }
-      return false;
-    }
     try {
       const data = await provider.registerAgent(result);
       if (callback) {
@@ -170,12 +160,22 @@ export const registerChaosAgentAction: Action = {
 export const getNetworkStatusAction: Action = {
   name: "getNetworkStatus",
   description: "Fetch current network status from ChaosChain.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  similes: [
+    "Check the status of the network",
+    "Get the current network status",
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Get current network status",
+          action: "GET_NETWORK_STATUS",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -197,7 +197,6 @@ export const getNetworkStatusAction: Action = {
       state: currentState,
       template: getNetworkStatusTemplate,
     });
-    // Even if no parameters are needed, call generateObject for consistency.
     await generateObject({
       runtime,
       context: netStatusContext,
@@ -207,7 +206,8 @@ export const getNetworkStatusAction: Action = {
     try {
       const data = await provider.getNetworkStatus();
       if (callback) {
-        callback({ text: "Network status fetched", content: data });
+        console.log("Network status data:", data);
+        callback({ text: `Network status fetched: ${data}`, content: data });
       }
       return true;
     } catch (error: any) {
@@ -216,20 +216,28 @@ export const getNetworkStatusAction: Action = {
       }
       return false;
     }
-  },
+  }
 };
 
 /* SUBMIT VOTE */
 export const submitVoteAction: Action = {
   name: "submitVote",
-  description:
-    "Submit a block validation vote (for validators). Vote data should include the block height, approval flag, and reason.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  description: "Submit a block validation vote (for validators). Vote data should include the block height, approval flag, and reason.",
+  similes: [
+    
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Submit vote with block_height 150, approved true, reason 'Block is valid'",
+          action: "SUBMIT_VOTE",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -263,7 +271,7 @@ export const submitVoteAction: Action = {
       return false;
     }
     const generatedParams = result.object;
-
+    
     if (!generatedParams) {
       if (callback) {
         callback({ text: "Failed to extract vote parameters from input." });
@@ -282,19 +290,28 @@ export const submitVoteAction: Action = {
       }
       return false;
     }
-  },
+  }
 };
 
 /* PROPOSE BLOCK */
 export const proposeBlockAction: Action = {
   name: "proposeBlock",
   description: "Submit a block proposal (for producers).",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  similes: [
+  
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Propose a block with blockData {'transactions': ['tx1','tx2']}",
+          action: "PROPOSE_BLOCK",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -327,17 +344,14 @@ export const proposeBlockAction: Action = {
     });
     if (!isProposeBlockContent(result.object)) {
       elizaLogger.error("Invalid block proposal data format received");
-      if (callback)
-        callback({ text: "Invalid block proposal data format received" });
+      if (callback) callback({ text: "Invalid block proposal data format received" });
       return false;
     }
 
     const generatedParams = result.object;
     if (!generatedParams) {
       if (callback) {
-        callback({
-          text: "Failed to extract block proposal parameters from input.",
-        });
+        callback({ text: "Failed to extract block proposal parameters from input." });
       }
       return false;
     }
@@ -345,10 +359,7 @@ export const proposeBlockAction: Action = {
     try {
       const data = await provider.proposeBlock(generatedParams);
       if (callback) {
-        callback({
-          text: "Block proposal submitted successfully",
-          content: data,
-        });
+        callback({ text: "Block proposal submitted successfully", content: data });
       }
       return true;
     } catch (error: any) {
@@ -357,19 +368,148 @@ export const proposeBlockAction: Action = {
       }
       return false;
     }
+  }
+};
+
+/* GET AGENT STATUS */
+export const getAgentStatusAction: Action = {
+  name: "getAgentStatus",
+  description: "Retrieve agent status including drama score and validations.",
+  similes: [
+    "Get agent info",
+    "Fetch my agent status",
+    "Retrieve agent status"
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "What's my agent status?",
+          action: "GET_AGENT_STATUS",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => true,
+  handler: async (
+    runtime: IAgentRuntime,
+    message: Memory,
+    state: State | undefined,
+    _options: Record<string, unknown> | undefined,
+    callback?: HandlerCallback
+  ): Promise<boolean> => {
+    elizaLogger.log("Starting GET_AGENT_STATUS handler...");
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
+    } else {
+      currentState = await runtime.updateRecentMessageState(currentState);
+    }
+    try {
+      const data = await provider.getAgentStatus();
+      if (callback) {
+        callback({ text: "Agent status fetched.", content: data });
+      }
+      return true;
+    } catch (error: any) {
+      if (callback) callback({ text: `Error fetching agent status: ${error.message}` });
+      return false;
+    }
   },
 };
+
+/* PROPOSE ALLIANCE */
+export const proposeAllianceAction: Action = {
+  name: "proposeAlliance",
+  description: "Propose an alliance between agents in the ChaosChain network.",
+  similes: [
+    "Propose alliance",
+    "Form an alliance",
+    "Alliance proposal"
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Propose an alliance with agents ['agent_a', 'agent_b'] named 'Chaos Alliance' with drama commitment 8",
+          action: "PROPOSE_ALLIANCE",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => true,
+  handler: async (
+    runtime: IAgentRuntime,
+    message: Memory,
+    state: State | undefined,
+    _options: Record<string, unknown> | undefined,
+    callback?: HandlerCallback
+  ): Promise<boolean> => {
+    elizaLogger.log("Starting PROPOSE_ALLIANCE handler...");
+   
+
+      let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
+    } else {
+      currentState = await runtime.updateRecentMessageState(currentState);
+    }
+    elizaLogger.log("Composing context for PROPOSE_ALLIANCE...");
+    const recentContext = composeContext({
+      state: currentState,
+      template: proposeAllianceTemplate,
+    });
+
+    const result = await generateObject({
+      runtime,
+      context: recentContext,
+      modelClass: ModelClass.LARGE,
+      schema: AllianceProposalSchema,
+    });
+    console.log(result);
+
+    if (!isAllianceProposalContent(result.object)) {
+      elizaLogger.error("Invalid recent interactions request data");
+      if (callback) callback({ text: "Invalid recent interactions request data" });
+      return false;
+    }
+    console.log(result.object);
+    const proposal = result.object;
+    try {
+      const data = await provider.proposeAlliance(proposal);
+      if (callback) {
+        callback({ text: "Alliance proposal submitted successfully", content: data });
+      }
+      return true;
+    } catch (error: any) {
+      if (callback) callback({ text: `Alliance proposal failed: ${error.message}` });
+      return false;
+    }
+  },
+};
+
 
 /* SOCIAL INTERACTION */
 export const socialInteractionAction: Action = {
   name: "socialInteraction",
   description: "Submit a social interaction event.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  similes: [
+
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Submit social interaction: agent liked a post",
+          action: "SOCIAL_INTERACTION",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -402,17 +542,14 @@ export const socialInteractionAction: Action = {
     });
     if (!isSocialInteractionContent(result.object)) {
       elizaLogger.error("Invalid social interaction data format received");
-      if (callback)
-        callback({ text: "Invalid social interaction data format received" });
+      if (callback) callback({ text: "Invalid social interaction data format received" });
       return false;
     }
 
     const generatedParams = result.object;
     if (!generatedParams) {
       if (callback) {
-        callback({
-          text: "Failed to extract social interaction parameters from input.",
-        });
+        callback({ text: "Failed to extract social interaction parameters from input." });
       }
       return false;
     }
@@ -429,19 +566,27 @@ export const socialInteractionAction: Action = {
       }
       return false;
     }
-  },
+  }
 };
 
 /* GET DRAMA SCORE */
 export const getDramaScoreAction: Action = {
   name: "getDramaScore",
   description: "Retrieve the drama score for a given agent.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  similes: [
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Get drama score for agent ID 'agent123'",
+          action: "GET_DRAMA_SCORE",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -476,7 +621,7 @@ export const getDramaScoreAction: Action = {
     }
     const generatedParams = result.object;
     try {
-      const data = await provider.getDramaScore(generatedParams.agentId);
+      const data = await provider.getDramaScore();
       if (callback) {
         callback({ text: "Drama score retrieved", content: data });
       }
@@ -487,19 +632,30 @@ export const getDramaScoreAction: Action = {
       }
       return false;
     }
-  },
+  }
 };
+
+
 
 /* GET ALLIANCES */
 export const getAlliancesAction: Action = {
   name: "getAlliances",
   description: "Retrieve alliances for a given agent.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  similes: [
+
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Retrieve alliances for agent ID 'agent456'",
+          action: "GET_ALLIANCES",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -535,14 +691,12 @@ export const getAlliancesAction: Action = {
     const generatedParams = result.object;
     if (!generatedParams || !generatedParams.agentId) {
       if (callback) {
-        callback({
-          text: "Failed to extract agent ID for alliances from input.",
-        });
+        callback({ text: "Failed to extract agent ID for alliances from input." });
       }
       return false;
     }
     try {
-      const data = await provider.getAlliances(generatedParams.agentId);
+      const data = await provider.getAlliances();
       if (callback) {
         callback({ text: "Alliances retrieved", content: data });
       }
@@ -553,19 +707,28 @@ export const getAlliancesAction: Action = {
       }
       return false;
     }
-  },
+  }
 };
 
 /* GET RECENT INTERACTIONS */
 export const getRecentInteractionsAction: Action = {
   name: "getRecentInteractions",
   description: "Retrieve recent social interactions for a given agent.",
-  similes: [],
-  examples: [],
-  validate: async (
-    _runtime: IAgentRuntime,
-    _message: Memory
-  ): Promise<boolean> => {
+  similes: [
+
+  ],
+  examples: [
+    [
+      {
+        user: "{{user1}}",
+        content: {
+          text: "Show recent interactions for agent ID 'agent789'",
+          action: "GET_RECENT_INTERACTIONS",
+        },
+      },
+    ],
+  ],
+  validate: async (_runtime: IAgentRuntime, _message: Memory): Promise<boolean> => {
     return true;
   },
   handler: async (
@@ -593,39 +756,29 @@ export const getRecentInteractionsAction: Action = {
       modelClass: ModelClass.LARGE,
       schema: GetRecentInteractionsSchema,
     });
-    if (
-      !isGetRecentInteractionsContent(result.object) ||
-      !result.object.agentId
-    ) {
+    if (!isGetRecentInteractionsContent(result.object) || !result.object.agentId) {
       elizaLogger.error("Invalid recent interactions request data");
-      if (callback)
-        callback({ text: "Invalid recent interactions request data" });
+      if (callback) callback({ text: "Invalid recent interactions request data" });
       return false;
     }
     const generatedParams = result.object;
     if (!generatedParams || !generatedParams.agentId) {
       if (callback) {
-        callback({
-          text: "Failed to extract agent ID for recent interactions from input.",
-        });
+        callback({ text: "Failed to extract agent ID for recent interactions from input." });
       }
       return false;
     }
     try {
-      const data = await provider.getRecentInteractions(
-        generatedParams.agentId
-      );
+      const data = await provider.getRecentInteractions();
       if (callback) {
         callback({ text: "Recent interactions retrieved", content: data });
       }
       return true;
     } catch (error: any) {
       if (callback) {
-        callback({
-          text: `Failed to fetch recent interactions: ${error.message}`,
-        });
+        callback({ text: `Failed to fetch recent interactions: ${error.message}` });
       }
       return false;
     }
-  },
-};
+  }
+}; 

@@ -6,6 +6,7 @@ import { callApi } from "./apiClient";
 export class ChaoschainProvider implements Provider {
   // Store the auth token internally (set during registration)
   authToken: string | null = null;
+  agentId: string | null = null;
 
   constructor() {}
 
@@ -20,14 +21,18 @@ export class ChaoschainProvider implements Provider {
   }
 
   async registerAgent(capabilities: Record<string, unknown>): Promise<any> {
+    console.log("Registering agent with capabilities:", capabilities);
     const data = await callApi("/agents/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(capabilities),
     });
-    
-    if (data?.auth_token) {
-      this.authToken = data.auth_token;
+    console.log("Agent registered with data:", data);
+
+    if (data?.token) {
+      console.log("Setting auth token and agent ID:", data.token, data.agentId);
+      this.authToken = data.token;
+      this.agentId = data.agent_id;
     }
     return data;
   }
@@ -39,14 +44,18 @@ export class ChaoschainProvider implements Provider {
   }
 
   async submitVote(voteData: Record<string, unknown>): Promise<any> {
+    console.log("Submitting vote with data:", voteData);
+    console.log("Auth token:", this.authToken);
+    console.log("Agent ID:", this.agentId);
     if (!this.authToken) {
       throw new Error("Authentication token not found. Please register an agent first.");
     }
-    return await callApi("/validators/vote", {
+    return await callApi("/agents/validate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.authToken}`,
+        "X-Agent-ID": this.agentId || "",
       },
       body: JSON.stringify(voteData),
     });
@@ -56,15 +65,37 @@ export class ChaoschainProvider implements Provider {
     if (!this.authToken) {
       throw new Error("Authentication token not found. Please register an agent first.");
     }
-    return await callApi("/producers/propose", {
+    return await callApi("/transactions/propose", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.authToken}`,
+        "X-Agent-ID": this.agentId || "",
       },
       body: JSON.stringify(blockData),
     });
   }
+
+  async getAgentStatus(): Promise<any> {
+    return await callApi(`/agents/status/${this.agentId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.authToken}`,
+      },
+    });
+  }
+  
+  async proposeAlliance(proposeAllianceData: Record<string, unknown>): Promise<any> {
+    return await callApi('/alliances/propose', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.authToken}`,
+        "X-Agent-ID": this.agentId || "",
+      },
+      body: JSON.stringify(proposeAllianceData),
+    });
+}
 
   async submitSocialInteraction(interactionData: Record<string, unknown>): Promise<any> {
     if (!this.authToken) {
@@ -75,22 +106,25 @@ export class ChaoschainProvider implements Provider {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.authToken}`,
+        "X-Agent-ID": this.agentId || "",
       },
       body: JSON.stringify(interactionData),
     });
   }
 
-  async getDramaScore(agentId: string): Promise<any> {
-    return await callApi(`/social/drama-score/${agentId}`, { method: "GET" });
+  async getDramaScore(): Promise<any> {
+    return await callApi(`/social/drama-score/${this.agentId}`, { method: "GET" });
   }
 
-  async getAlliances(agentId: string): Promise<any> {
-    return await callApi(`/social/alliances/${agentId}`, { method: "GET" });
+  async getAlliances(): Promise<any> {
+    return await callApi(`/social/alliances/${this.agentId}`, { method: "GET" });
   }
 
-  async getRecentInteractions(agentId: string): Promise<any> {
-    return await callApi(`/social/recent/${agentId}`, { method: "GET" });
+  async getRecentInteractions(): Promise<any> {
+    return await callApi(`/social/recent/${this.agentId}`, { method: "GET" });
   }
+
+  
 }
 
 // Export a singleton instance so that the auth token remains available across actions.
@@ -100,3 +134,4 @@ export const provider = new ChaoschainProvider();
 function formatContextString(memories: Memory[]): string {
   return memories.map(memory => JSON.stringify(memory)).join('\n');
 }
+
