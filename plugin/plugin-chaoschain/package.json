@@ -3,22 +3,22 @@
   "version": "1.438.0",
   "description": "A plugin for chaoschain",
   "type": "module",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "exports": {
-        "./package.json": "./package.json",
-        ".": {
-            "import": {
-                "@elizaos/source": "./src/index.ts",
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.js"
-            }
-        }
-    },
-    "files": [
-        "dist"
-    ],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "@elizaos/source": "./src/index.ts",
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "dev": "tsup --format esm --dts --watch",
@@ -31,6 +31,7 @@
     "@elizaos/core": "^0.25.6-alpha.1",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
+    "openai": "^4.85.1",
     "sharp": "^0.33.5",
     "ws": "^8.18.0",
     "zod": "^3.24.2"
