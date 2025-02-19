@@ -32,4 +32,4 @@ const chaoschainPlugin: Plugin = {
   ],
 };
 
-export default chaoschainPlugin; 
+export default chaoschainPlugin;
