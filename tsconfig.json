@@ -6,7 +6,7 @@
       "resolveJsonModule": true,
       "sourceMap": true,
       "target": "es2020",
-      "outDir": "plugin/dist",
+      "outDir": "dist",
       "experimentalDecorators": true,
       "strict": true,
       "baseUrl": "plugin",
@@ -14,13 +14,15 @@
       "esModuleInterop": true,
       "paths": {
         "ai": ["plugin/patches/ai.d.ts"],
-        "@elizaos/plugin-chaoschain": ["plugin/plugin-chaoschain/src"]
+        "@elizaos/plugin-chaoschain": ["plugin/plugin-chaoschain/src"],
+        "@elizaos/client-auto": ["plugin/client-auto/src"],
+        "@elizaos/client-auto/*": ["plugin/client-auto/src/*"]
       },
       "skipLibCheck": true,
       "noImplicitAny": false,
       "typeRoots": ["./src/types", "./node_modules/@types"]
     },
-    "include": ["plugin/**/*.ts", "src/**/*.ts"],
+    "include": ["plugin/**/*.ts", "src/**/*.ts", "test.ts", "test2.ts"],
     "exclude": ["plugin/node_modules", "plugin/**/*.spec.ts"]
   }
   

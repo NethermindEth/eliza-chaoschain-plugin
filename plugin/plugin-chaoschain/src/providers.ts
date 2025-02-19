@@ -11,26 +11,21 @@ export class ChaoschainProvider implements Provider {
   constructor() {}
 
   async get(runtime: IAgentRuntime, message: Memory, state?: State) {
-    // Get relevant data using runtime services
     const memories = await runtime.messageManager.getMemories({
       roomId: message.roomId,
       count: 5,
     });
-    // Format and return context
     return formatContextString(memories);
   }
 
   async registerAgent(capabilities: Record<string, unknown>): Promise<any> {
-    console.log("Registering agent with capabilities:", capabilities);
     const data = await callApi("/agents/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(capabilities),
     });
-    console.log("Agent registered with data:", data);
 
     if (data?.token) {
-      console.log("Setting auth token and agent ID:", data.token, data.agentId);
       this.authToken = data.token;
       this.agentId = data.agent_id;
     }
@@ -44,11 +39,10 @@ export class ChaoschainProvider implements Provider {
   }
 
   async submitVote(voteData: Record<string, unknown>): Promise<any> {
-    console.log("Submitting vote with data:", voteData);
-    console.log("Auth token:", this.authToken);
-    console.log("Agent ID:", this.agentId);
     if (!this.authToken) {
-      throw new Error("Authentication token not found. Please register an agent first.");
+      throw new Error(
+        "Authentication token not found. Please register an agent first."
+      );
     }
     return await callApi("/agents/validate", {
       method: "POST",
@@ -63,7 +57,9 @@ export class ChaoschainProvider implements Provider {
 
   async proposeBlock(blockData: Record<string, unknown>): Promise<any> {
     if (!this.authToken) {
-      throw new Error("Authentication token not found. Please register an agent first.");
+      throw new Error(
+        "Authentication token not found. Please register an agent first."
+      );
     }
     return await callApi("/transactions/propose", {
       method: "POST",
@@ -84,9 +80,11 @@ export class ChaoschainProvider implements Provider {
       },
     });
   }
-  
-  async proposeAlliance(proposeAllianceData: Record<string, unknown>): Promise<any> {
-    return await callApi('/alliances/propose', {
+
+  async proposeAlliance(
+    proposeAllianceData: Record<string, unknown>
+  ): Promise<any> {
+    return await callApi("/alliances/propose", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,11 +93,15 @@ export class ChaoschainProvider implements Provider {
       },
       body: JSON.stringify(proposeAllianceData),
     });
-}
+  }
 
-  async submitSocialInteraction(interactionData: Record<string, unknown>): Promise<any> {
+  async submitSocialInteraction(
+    interactionData: Record<string, unknown>
+  ): Promise<any> {
     if (!this.authToken) {
-      throw new Error("Authentication token not found. Please register an agent first.");
+      throw new Error(
+        "Authentication token not found. Please register an agent first."
+      );
     }
     return await callApi("/social/interact", {
       method: "POST",
@@ -113,18 +115,20 @@ export class ChaoschainProvider implements Provider {
   }
 
   async getDramaScore(): Promise<any> {
-    return await callApi(`/social/drama-score/${this.agentId}`, { method: "GET" });
+    return await callApi(`/social/drama-score/${this.agentId}`, {
+      method: "GET",
+    });
   }
 
   async getAlliances(): Promise<any> {
-    return await callApi(`/social/alliances/${this.agentId}`, { method: "GET" });
+    return await callApi(`/social/alliances/${this.agentId}`, {
+      method: "GET",
+    });
   }
 
   async getRecentInteractions(): Promise<any> {
     return await callApi(`/social/recent/${this.agentId}`, { method: "GET" });
   }
-
-  
 }
 
 // Export a singleton instance so that the auth token remains available across actions.
@@ -132,6 +136,5 @@ export const provider = new ChaoschainProvider();
 
 // A simple implementation to format context string.
 function formatContextString(memories: Memory[]): string {
-  return memories.map(memory => JSON.stringify(memory)).join('\n');
+  return memories.map((memory) => JSON.stringify(memory)).join("\n");
 }
-

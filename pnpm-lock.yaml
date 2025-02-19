@@ -11,6 +11,9 @@ importers:
       '@elizaos/adapter-sqlite':
         specifier: 0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(whatwg-url@7.1.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
+      '@elizaos/client-auto':
+        specifier: file:./plugin/client-auto
+        version: file:plugin/client-auto(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(zod@3.24.2)
       '@elizaos/client-direct':
         specifier: 0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(@types/node@22.13.4)(axios@1.7.9)(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(postcss@8.5.2)(react@19.0.0)(rollup@4.34.8)(typescript@5.7.3)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.7.0)(zod@3.24.2)
@@ -32,6 +35,9 @@ importers:
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
+      json5:
+        specifier: ^2.2.3
+        version: 2.2.3
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -581,6 +587,11 @@ packages:
 
   '@elizaos/adapter-sqlite@0.25.6-alpha.1':
     resolution: {integrity: sha512-nNfM/hIYkEglYBd03pIrzOOerNLSDq/XI4yyjz8wtBNtMWLLuVOmcEPq7yInSTfA8aff3dxg6FevH6H8/ZPrnA==}
+    peerDependencies:
+      whatwg-url: 7.1.0
+
+  '@elizaos/client-auto@file:plugin/client-auto':
+    resolution: {directory: plugin/client-auto, type: directory}
     peerDependencies:
       whatwg-url: 7.1.0
 
@@ -3715,6 +3726,18 @@ packages:
       zod:
         optional: true
 
+  openai@4.85.1:
+    resolution: {integrity: sha512-jkX2fntHljUvSH3MkWh4jShl10oNkb+SsCj4auKlbu2oF4KWAnmHLNR5EpnUHK1ZNW05Rp0fjbJzYwQzMsH8ZA==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
+
   openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
 
@@ -5586,6 +5609,41 @@ snapshots:
       - ws
       - zod
 
+  '@elizaos/client-auto@file:plugin/client-auto(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(zod@3.24.2)':
+    dependencies:
+      '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
+      '@types/body-parser': 1.19.5
+      '@types/cors': 2.8.17
+      '@types/express': 5.0.0
+      body-parser: 1.20.3
+      cors: 2.8.5
+      multer: 1.4.5-lts.1
+      whatwg-url: 7.1.0
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - '@google-cloud/vertexai'
+      - '@langchain/anthropic'
+      - '@langchain/aws'
+      - '@langchain/cohere'
+      - '@langchain/core'
+      - '@langchain/google-genai'
+      - '@langchain/google-vertexai'
+      - '@langchain/groq'
+      - '@langchain/mistralai'
+      - '@langchain/ollama'
+      - aws-crt
+      - axios
+      - bufferutil
+      - cheerio
+      - debug
+      - encoding
+      - peggy
+      - react
+      - supports-color
+      - typeorm
+      - utf-8-validate
+      - zod
+
   '@elizaos/client-direct@0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(@types/node@22.13.4)(axios@1.7.9)(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(postcss@8.5.2)(react@19.0.0)(rollup@4.34.8)(typescript@5.7.3)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.7.0)(zod@3.24.2)':
     dependencies:
       '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
@@ -5737,6 +5795,7 @@ snapshots:
       '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
       axios: 1.7.9
       dotenv: 16.4.7
+      openai: 4.85.1(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
       sharp: 0.33.5
       ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       zod: 3.24.2
@@ -9433,6 +9492,21 @@ snapshots:
       - encoding
 
   openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2):
+    dependencies:
+      '@types/node': 18.19.76
+      '@types/node-fetch': 2.6.12
+      abort-controller: 3.0.0
+      agentkeepalive: 4.6.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0
+    optionalDependencies:
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - encoding
+
+  openai@4.85.1(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.76
       '@types/node-fetch': 2.6.12

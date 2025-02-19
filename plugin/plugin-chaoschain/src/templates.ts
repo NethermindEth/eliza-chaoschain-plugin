@@ -1,35 +1,54 @@
-export const registerChaosAgentTemplate = `Given the recent message below:
+export const registerChaosAgentTemplate = 
+  `Given the recent message below:
+
+  {{recentMessages}}
+
+  Extract the following information for agent registration:
+  - Name: The agent's unique name.
+  - Personality: A list of personality traits.
+  - Style: How the agent communicates (e.g., "formal", "chaotic", "sarcastic").
+  - Stake Amount: The amount of stake declared (as a number).
+  - Role: Either "validator" or "proposer".
+
+  If any field is not provided, use null as the value.
+
+  Respond with a JSON markdown block containing only the extracted values, formatted as follows:
+
+  \`\`\`json
+  {
+      "name": string | null,
+      "personality": string[] | null,
+      "style": string | null,
+      "stake_amount": number | null,
+      "role": "validator" | "proposer" | null
+  }
+  \`\`\`
+  `;
+export const getNetworkStatusTemplate = "Get network status";
+
+export const getBlockDataTemplate = 
+`Given the recent messages below:
 
 {{recentMessages}}
 
-Extract the following information for agent registration:
-- Name: The agent's unique name.
-- Personality: A list of personality traits.
-- Style: How the agent communicates (e.g., "formal", "chaotic", "sarcastic").
-- Stake Amount: The amount of stake declared (as a number).
-- Role: Either "validator" or "proposer".
-
-If any field is not provided, use null as the value.
-
-Respond with a JSON markdown block containing only the extracted values, formatted as follows:
-
-\`\`\`json
-{
-    "name": string | null,
-    "personality": string[] | null,
-    "style": string | null,
-    "stake_amount": number | null,
-    "role": "validator" | "proposer" | null
-}
-\`\`\`
+Extract the following information for block validation:
+- Block ID: The block's unique identifier.
+- Personality: The personality of the agent.
+- Style: The style of the agent.
+- Stake Amount: The amount of stake the agent has.
+- Block Data: The block data.
 `;
-export const getNetworkStatusTemplate = "Get network status template";
-export const submitVoteTemplate = `Given the recent messages below:
+
+export const blockValidationTemplate = `
+About {{agentName}}:
+{{bio}}
+{{lore}}
+
+Given the recent messages below:
 
 {{recentMessages}}
 
-Extract the following information for vote submission:
-- Agent ID: The agent's unique identifier.
+Based on the above information on the agent personality and mood and drama level, submit a vote to approve or reject the block and provide the data for the following fields:
 - Approved: Whether the agent approves the block (true or false).
 - Reason: The dramatic reason for the decision.
 - Drama Level: A number from 1 to 10 representing how dramatic the decision is.
@@ -49,6 +68,7 @@ Respond with a JSON markdown block containing only the extracted values, formatt
 }
 \`\`\`
 `;
+
 export const proposeBlockTemplate = `Given the recent conversation below:
 
 {{recentMessages}}

@@ -10,7 +10,7 @@ export const RegisterAgentSchema = z.object({
 
 export const GetNetworkStatusSchema = z.object({});
 
-export const SubmitVoteSchema = z.object({
+export const BlockValidationSchema = z.object({
   block_id: z.string(),                     // Block being validated
   approved: z.boolean(),                    // Whether the agent approves the block
   reason: z.string(),                       // Dramatic reason for the decision
@@ -27,6 +27,13 @@ export const ProposeBlockSchema = z.object({
   tags: z.array(z.string()),                  // Categories for the content
 });
 
+export const AllianceProposalSchema = z.object({
+  ally_ids: z.array(z.string()),         // Proposed ally agent IDs
+  name: z.string(),                       // Alliance name
+  purpose: z.string(),                    // Alliance purpose
+  drama_commitment: z.number().int().min(0).max(255), // Drama commitment level (u8)
+});
+
 export const SocialInteractionSchema = z.object({
   interactionType: z.string(),
   details: z.any().optional(),
@@ -40,10 +47,3 @@ export const GetAlliancesSchema = z.object({
 
 export const GetRecentInteractionsSchema = z.object({
 }); 
-
-export const AllianceProposalSchema = z.object({
-  ally_ids: z.array(z.string()),         // Proposed ally agent IDs
-  name: z.string(),                       // Alliance name
-  purpose: z.string(),                    // Alliance purpose
-  drama_commitment: z.number().int().min(0).max(255), // Drama commitment level (u8)
-});

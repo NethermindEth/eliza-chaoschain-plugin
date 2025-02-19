@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@elizaos/adapter-sqlite": "0.25.6-alpha.1",
+    "@elizaos/client-auto": "file:./plugin/client-auto",
     "@elizaos/client-direct": "0.25.6-alpha.1",
     "@elizaos/client-telegram": "0.25.6-alpha.1",
     "@elizaos/core": "^0.25.6-alpha.1",
