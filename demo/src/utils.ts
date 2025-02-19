@@ -21,7 +21,7 @@ dotenv.config();
  * Initializes the database adapter using better-sqlite3.
  */
 export function initializeDatabase(dataDir: string) {
-  const dbPath = path.resolve(dataDir, "alithra.db");
+  const dbPath = path.resolve(dataDir, "chaoschain.db");
   elizaLogger.info(`Initializing SQLite database at absolute path: ${dbPath}`);
 
   try {
