@@ -15,14 +15,12 @@
       "paths": {
         "ai": ["plugin/patches/ai.d.ts"],
         "@elizaos/plugin-chaoschain": ["plugin/plugin-chaoschain/src"],
-        "@elizaos/client-auto": ["plugin/client-auto/src"],
-        "@elizaos/client-auto/*": ["plugin/client-auto/src/*"]
       },
       "skipLibCheck": true,
       "noImplicitAny": false,
       "typeRoots": ["./src/types", "./node_modules/@types"]
     },
-    "include": ["plugin/**/*.ts", "src/**/*.ts", "test.ts", "test2.ts"],
+    "include": ["plugin/**/*.ts", "src/**/*.ts"],
     "exclude": ["plugin/node_modules", "plugin/**/*.spec.ts"]
   }
   
