@@ -16,9 +16,9 @@
     },
     "skipLibCheck": true,
     "noImplicitAny": false,
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    "typeRoots": ["plugin-chaoschain/src/types", "./node_modules/@types"]
   },
-  "include": ["plugin/**/*.ts", "src/**/*.ts"],
+  "include": ["src"],
   "exclude": ["plugin/node_modules", "plugin/**/*.spec.ts"],
   "outDir": "dist",
   "rootDir": "./src",
