@@ -11,9 +11,6 @@ importers:
       '@elizaos/adapter-sqlite':
         specifier: 0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(whatwg-url@7.1.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
-      '@elizaos/client-auto':
-        specifier: file:./plugin/client-auto
-        version: file:plugin/client-auto(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(zod@3.24.2)
       '@elizaos/client-direct':
         specifier: 0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(@types/node@22.13.4)(axios@1.7.9)(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(postcss@8.5.2)(react@19.0.0)(rollup@4.34.8)(typescript@5.7.3)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.7.0)(zod@3.24.2)
@@ -24,8 +21,8 @@ importers:
         specifier: ^0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
       '@elizaos/plugin-chaoschain':
-        specifier: file:./plugin/plugin-chaoschain
-        version: file:plugin/plugin-chaoschain(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)
+        specifier: file:../plugin-chaoschain
+        version: file:../plugin-chaoschain(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -35,9 +32,6 @@ importers:
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
-      json5:
-        specifier: ^2.2.3
-        version: 2.2.3
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -590,11 +584,6 @@ packages:
     peerDependencies:
       whatwg-url: 7.1.0
 
-  '@elizaos/client-auto@file:plugin/client-auto':
-    resolution: {directory: plugin/client-auto, type: directory}
-    peerDependencies:
-      whatwg-url: 7.1.0
-
   '@elizaos/client-direct@0.25.6-alpha.1':
     resolution: {integrity: sha512-4HHVmB7baGeutb1JF2dp8hSkzMUp2NclOOgXrs3Gt/E6P4BncP2qhomLMv4UAwYgm27b6r5Sr9mwt62oeA+u6g==}
     peerDependencies:
@@ -606,8 +595,8 @@ packages:
   '@elizaos/core@0.25.6-alpha.1':
     resolution: {integrity: sha512-JZEQfmyEDTyWtPyfAopG0Ztnnh5GqQxzdvJGGwWGAkVYO5uselQNiSeMDvuIsRArRHjQlLpg2cUqsv0Y3ngppA==}
 
-  '@elizaos/plugin-chaoschain@file:plugin/plugin-chaoschain':
-    resolution: {directory: plugin/plugin-chaoschain, type: directory}
+  '@elizaos/plugin-chaoschain@file:../plugin-chaoschain':
+    resolution: {directory: ../plugin-chaoschain, type: directory}
 
   '@elizaos/plugin-image-generation@0.25.6-alpha.1':
     resolution: {integrity: sha512-TCvCxG9HdSm+IvxK235X2BI0FZHBn1Io1PRPwkG9ZA/IgJxUu7WFI7D+zQNoQyrbpLY8/+4Nzry7+XaDYHF2ew==}
@@ -5609,41 +5598,6 @@ snapshots:
       - ws
       - zod
 
-  '@elizaos/client-auto@file:plugin/client-auto(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(zod@3.24.2)':
-    dependencies:
-      '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
-      '@types/body-parser': 1.19.5
-      '@types/cors': 2.8.17
-      '@types/express': 5.0.0
-      body-parser: 1.20.3
-      cors: 2.8.5
-      multer: 1.4.5-lts.1
-      whatwg-url: 7.1.0
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - '@google-cloud/vertexai'
-      - '@langchain/anthropic'
-      - '@langchain/aws'
-      - '@langchain/cohere'
-      - '@langchain/core'
-      - '@langchain/google-genai'
-      - '@langchain/google-vertexai'
-      - '@langchain/groq'
-      - '@langchain/mistralai'
-      - '@langchain/ollama'
-      - aws-crt
-      - axios
-      - bufferutil
-      - cheerio
-      - debug
-      - encoding
-      - peggy
-      - react
-      - supports-color
-      - typeorm
-      - utf-8-validate
-      - zod
-
   '@elizaos/client-direct@0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(@types/node@22.13.4)(axios@1.7.9)(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(postcss@8.5.2)(react@19.0.0)(rollup@4.34.8)(typescript@5.7.3)(utf-8-validate@5.0.10)(whatwg-url@7.1.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.7.0)(zod@3.24.2)':
     dependencies:
       '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
@@ -5790,7 +5744,7 @@ snapshots:
       - ws
       - zod
 
-  '@elizaos/plugin-chaoschain@file:plugin/plugin-chaoschain(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)':
+  '@elizaos/plugin-chaoschain@file:../plugin-chaoschain(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)':
     dependencies:
       '@elizaos/core': 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.40(openai@4.82.0(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)))(axios@1.7.9)(react@19.0.0)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.24.2)
       axios: 1.7.9
