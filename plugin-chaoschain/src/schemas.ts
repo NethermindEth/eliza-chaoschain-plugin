@@ -34,16 +34,3 @@ export const AllianceProposalSchema = z.object({
   drama_commitment: z.number().int().min(0).max(255), // Drama commitment level (u8)
 });
 
-export const SocialInteractionSchema = z.object({
-  interactionType: z.string(),
-  details: z.any().optional(),
-});
-
-export const GetDramaScoreSchema = z.object({
-});
-
-export const GetAlliancesSchema = z.object({
-});
-
-export const GetRecentInteractionsSchema = z.object({
-}); 

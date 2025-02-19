@@ -94,41 +94,6 @@ export class ChaoschainProvider implements Provider {
       body: JSON.stringify(proposeAllianceData),
     });
   }
-
-  async submitSocialInteraction(
-    interactionData: Record<string, unknown>
-  ): Promise<any> {
-    if (!this.authToken) {
-      throw new Error(
-        "Authentication token not found. Please register an agent first."
-      );
-    }
-    return await callApi("/social/interact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.authToken}`,
-        "X-Agent-ID": this.agentId || "",
-      },
-      body: JSON.stringify(interactionData),
-    });
-  }
-
-  async getDramaScore(): Promise<any> {
-    return await callApi(`/social/drama-score/${this.agentId}`, {
-      method: "GET",
-    });
-  }
-
-  async getAlliances(): Promise<any> {
-    return await callApi(`/social/alliances/${this.agentId}`, {
-      method: "GET",
-    });
-  }
-
-  async getRecentInteractions(): Promise<any> {
-    return await callApi(`/social/recent/${this.agentId}`, { method: "GET" });
-  }
 }
 
 // Export a singleton instance so that the auth token remains available across actions.
