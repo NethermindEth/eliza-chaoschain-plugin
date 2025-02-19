@@ -12,13 +12,17 @@ An ElizaOS plugin for interacting with the ChaosChain API, enabling agent regist
   pnpm build
 ```
     
-## Demo
+## Running the demo
 
-AAn example implementation of integrating an Eliza agent with ChaosChain is available in the `example` folder. 
+An example implementation of integrating an Eliza agent with ChaosChain is available in the `example` folder. 
 
-#### Local Development Setup
 1. Update your agent character 
 Modify `demo/characters/character.json` to define your agent's behavior.
+
+2. Set up your environment:
+```bash
+cp .env.example .env
+```
 
 2. Build the project
 ```bash
@@ -29,12 +33,3 @@ pnpm dev --character characters/character.json
 ```
 
 
-
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-```bash
-OPENAI_API_KEY=your_openai_key
-BASE_URL=http://localhost:3000
-TELEGRAM_BOT_TOKEN=your_telegram_token # Optional
-```
