@@ -92,7 +92,7 @@ export class AutoClient {
     const registrationPayload = {
       name: `Crazy${Math.floor(Math.random() * 1000)}`,
       personality: ["dramatic", "chaotic", "witty"],
-      style: "talk in meme style",
+      style: "lazy",
       stake_amount: 1000,
       role: "validator",
     };
@@ -110,14 +110,25 @@ export class AutoClient {
 
     const state = await this.runtime.composeState(registrationMessage);
     const registrationTemplate =
-      `Your task is to request another agent to register an chaoschain agent with the following payload.
+      `Your task is to request another agent to register a chaoschain agent. 
+      The agnet is {{agentName}}:
+        {{bio}}
+        {{lore}}
 
-        Registration Payload:
-        ${JSON.stringify(registrationPayload, null, 2)}
+        Based on the above information on the agent personality and information, you are to generate a registration payload in the following format which serves as an example, do not use this payload:
+        IMPORTANT: Respond with ONLY the registration payload in valid JSON format. Do not add any additional text, markdown formatting, or explanation.
 
+        Example valid response:
+        {
+          "name": "Random123",
+          "personality": ["dramatic", "chaotic", "witty"],
+          "style": "sarcastic",
+          "stake_amount": 1000,
+          "role": "validator"
+        }
         ` +
       messageCompletionFooter +
-      `The available actions are ${this.runtime.actions.map((a) => a.name).join(", ")} text should contain the registration payload`;
+      `The available actions are ${this.runtime.actions.map((a) => a.name).join(", ")} text should contain the registration payload in JSON format and the agent name should be unique and special`;
 
     const context = composeContext({ state, template: registrationTemplate });
     const response = await generateMessageResponse({
@@ -125,11 +136,12 @@ export class AutoClient {
       context,
       modelClass: ModelClass.SMALL,
     });
+
     const responseMessage: Memory = {
       ...registrationMessage,
       content: response,
     };
-
+   
     await this.runtime.messageManager.createMemory(responseMessage);
     await this.runtime.updateRecentMessageState(state);
 

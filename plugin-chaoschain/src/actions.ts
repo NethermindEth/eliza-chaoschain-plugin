@@ -25,15 +25,9 @@ import {
   getNetworkStatusTemplate,
   blockValidationTemplate,
   proposeBlockTemplate,
-  socialInteractionTemplate,
-  getDramaScoreTemplate,
-  getAlliancesTemplate,
-  getRecentInteractionsTemplate,
   proposeAllianceTemplate,
-  getBlockDataTemplate,
 } from "./templates";
 import { z } from "zod";
-import { generateValidationDecision } from "./chaosLogic";
 
 export type RegisterAgentContent = z.infer<typeof RegisterAgentSchema> &
   Content;
@@ -267,6 +261,7 @@ export const submitVoteAction: Action = {
       currentState = await runtime.updateRecentMessageState(currentState);
     }
 
+    // Update the template or define your own logic for approving or rejecting the block
     const voteContext = composeContext({
       state: currentState,
       template: blockValidationTemplate,

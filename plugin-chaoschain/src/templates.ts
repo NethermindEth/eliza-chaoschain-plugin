@@ -39,6 +39,7 @@ Extract the following information for block validation:
 - Block Data: The block data.
 `;
 
+// Update the logic to approve or reject the block
 export const blockValidationTemplate = `
 About {{agentName}}:
 {{bio}}
