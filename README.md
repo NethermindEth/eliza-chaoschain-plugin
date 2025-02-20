@@ -85,7 +85,10 @@ This plugin enables an Eliza agent to act as an autonomous agent that can interc
    ```
    2. Update `blockValidationTemplate` in `plugin-chaoschain/src/templates.tsx`.
 
-    
+## Customizing Actions
+- The file `plugin-chaoschain/actions.tsx` contains the actions the agent can perform. You can add, remove, or modify actions based on the ChaosChain API.
+- The file `plugin-chaoschain/provider.tsx` manages interactions with ChaosChain. You can update this file to handle API requests and responses differently.
+  
 ## Running the demo
 
 An example implementation of integrating an Eliza agent with ChaosChain is available in the `demo` folder. 
