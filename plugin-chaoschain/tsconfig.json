@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "pretty": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "target": "es2020",
+    "outDir": "dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "baseUrl": "plugin",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "paths": {
+      "ai": ["plugin/patches/ai.d.ts"],
+      "@elizaos/plugin-chaoschain": ["plugin-chaoschain/src"],
+    },
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "typeRoots": ["src/types", "./node_modules/@types"]
+  },
+  "include": ["src"],
+  "exclude": []
+}
+  
+
+  
