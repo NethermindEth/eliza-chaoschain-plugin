@@ -5,10 +5,10 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: true,
     clean: true,
-    format: ["esm"],
+    format: ["esm"], // Ensure you're targeting CommonJS
     external: [
-        "dotenv",
-        "fs",
+        "dotenv", // Externalize dotenv to prevent bundling
+        "fs", // Externalize fs to use Node.js built-in module
         "zod",
         "path"
     ],

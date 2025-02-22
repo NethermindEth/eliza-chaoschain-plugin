@@ -7,15 +7,17 @@ import {
     Memory,
     State,
 } from "@elizaos/core";
-import { validateChaosChainConfig } from "../environment";
-import { ChaosChainService } from "../services";
+import { validateChaoschainConfig } from "../environment";
+import { validateBlockService } from "../services";
+import { validateBlockExamples } from "../examples";
+import { BlockValidationDecision } from "../types";
 
 export const validateBlockAction: Action = {
     name: "CHAOSCHAIN_VALIDATE_BLOCK",
     similes: ["BLOCK VALIDATION", "CHECK BLOCK", "CHAOSCHAIN"],
     description: "Validates a ChaosChain block based on its drama level.",
     validate: async (runtime: IAgentRuntime) => {
-        await validateChaosChainConfig(runtime);
+        await validateChaoschainConfig(runtime);
         return true;
     },
     handler: async (
@@ -25,6 +27,9 @@ export const validateBlockAction: Action = {
         _options: { block: any },
         callback: HandlerCallback
     ) => {
+        const config = await validateChaoschainConfig(runtime);
+        const chaoschainService = validateBlockService();
+
         const { block } = _options as { block?: any; };
 
         if (!block) {
@@ -40,36 +45,31 @@ export const validateBlockAction: Action = {
             return false;
         }
 
+        const validationDecision: BlockValidationDecision = {
+            block_id: block.block_id,
+            approved: block.drama_level > 5, // Approve if drama is high enough
+            reason: block.drama_level > 5 ? "This block is full of drama! ✅" : "Not dramatic enough. ❌",
+            drama_level: Math.min(block.drama_level + 1, 10), // Increase drama slightly
+        };
+
         try {
-            const validationDecision = {
-                block_id: block.block_id,
-                approved: block.drama_level > 5, // Approve if drama is high enough
-                reason: block.drama_level > 5 ? "This block is full of drama! ✅" : "Not dramatic enough. ❌",
-                drama_level: Math.min(block.drama_level + 1, 10), // Increase drama slightly
-            };
+            const response = await chaoschainService.validate(validationDecision);
 
-            await ChaosChainService.validateBlock(validationDecision);
-
-            elizaLogger.success("[ChaosChain] Block validation submitted.");
+            elizaLogger.success("[ChaosChain] Block validation submitted.", response);
             callback({
-                text: `Block ${block.block_id} validation decision submitted.`,
+                text: `Block ${block?.block_id} validation decision submitted!`,
             });
             return true;
         } catch (error: any) {
             elizaLogger.error("[ChaosChain] Error validating block:", error);
             callback({
-                text: `Error validating block: ${error.message}`,
+                text: `Error validating agent: ${error.message}`,
                 content: { error: error.message },
             });
             return false;
         }
     },
-    examples: [
-        [
-            { user: "{{user1}}", content: { text: "Validate this ChaosChain block" } },
-            { user: "{{agent}}", content: { text: "Processing block validation...", action: "CHAOSCHAIN_VALIDATE_BLOCK" } },
-        ],
-    ] as ActionExample[][],
+    examples: validateBlockExamples as ActionExample[][],
 } as Action;
 
 export const handleValidationRequest = validateBlockAction.handler;

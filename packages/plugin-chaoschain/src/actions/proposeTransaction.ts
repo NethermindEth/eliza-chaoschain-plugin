@@ -1,21 +1,23 @@
 import {
-    elizaLogger,
-    Action,
-    ActionExample,
+elizaLogger,
+Action,
+ActionExample,
     HandlerCallback,
     IAgentRuntime,
     Memory,
     State,
 } from "@elizaos/core";
-import { validateChaosChainConfig } from "../environment";
-import { ChaosChainService } from "../services";
+import { validateChaoschainConfig } from "../environment.ts";
+import { proposeTransactionService } from "../services.ts";
+import { proposeTransactionExamples } from "../examples.ts";
+import { TransactionProposal } from "../types.ts";
 
 export const proposeTransactionAction: Action = {
     name: "CHAOSCHAIN_PROPOSE_TRANSACTION",
     similes: ["TRANSACTION", "PROPOSE CONTENT", "CHAOSCHAIN"],
     description: "Proposes a creative transaction to ChaosChain with a drama rating.",
     validate: async (runtime: IAgentRuntime) => {
-        await validateChaosChainConfig(runtime);
+        await validateChaoschainConfig(runtime);
         return true;
     },
     handler: async (
@@ -40,8 +42,11 @@ export const proposeTransactionAction: Action = {
             return false;
         }
 
+        const config = await validateChaoschainConfig(runtime);
+        const chaoschainService = proposeTransactionService();
+
         try {
-            const transaction = {
+            const transaction: TransactionProposal = {
                 source: "ElizaAgent",
                 content,
                 drama_level: dramaLevel,
@@ -49,7 +54,7 @@ export const proposeTransactionAction: Action = {
                 tags: ["drama", "chaos", "intensity"],
             };
 
-            await ChaosChainService.proposeTransaction(transaction);
+            await chaoschainService.propose(transaction);
 
             elizaLogger.success("[ChaosChain] Transaction proposal submitted.");
             callback({
@@ -65,10 +70,5 @@ export const proposeTransactionAction: Action = {
             return false;
         }
     },
-    examples: [
-        [
-            { user: "{{user1}}", content: { text: "Submit a dramatic transaction to ChaosChain" } },
-            { user: "{{agent}}", content: { text: "Submitting transaction...", action: "CHAOSCHAIN_PROPOSE_TRANSACTION" } },
-        ],
-    ] as ActionExample[][],
+    examples: proposeTransactionExamples as ActionExample[][],
 } as Action;
