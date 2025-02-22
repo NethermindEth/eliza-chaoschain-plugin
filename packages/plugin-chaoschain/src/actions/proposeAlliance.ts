@@ -7,15 +7,17 @@ import {
     Memory,
     State,
 } from "@elizaos/core";
-import { validateChaosChainConfig } from "../environment";
-import { ChaosChainService } from "../services";
+import { validateChaoschainConfig } from "../environment.ts";
+import { proposeAllianceService } from "../services.ts";
+import { proposeAllianceExamples } from "../examples.ts";
+import { AllianceProposal } from "../types.ts";
 
 export const proposeAllianceAction: Action = {
     name: "CHAOSCHAIN_PROPOSE_ALLIANCE",
     similes: ["ALLIANCE", "TEAM UP", "PARTNERSHIP", "CHAOSCHAIN"],
     description: "Proposes an alliance between the Eliza agent and other ChaosChain agents.",
     validate: async (runtime: IAgentRuntime) => {
-        await validateChaosChainConfig(runtime);
+        await validateChaoschainConfig(runtime);
         return true;
     },
     handler: async (
@@ -44,15 +46,18 @@ export const proposeAllianceAction: Action = {
             return false;
         }
 
+        const config = await validateChaoschainConfig(runtime);
+        const chaoschainService = proposeAllianceService();
+
         try {
-            const allianceProposal = {
+            const allianceProposal: AllianceProposal = {
                 name: `Alliance of ${runtime.character.name}`,
                 purpose,
                 ally_ids: allyIds,
                 drama_commitment: dramaCommitment,
             };
 
-            await ChaosChainService.proposeAlliance(allianceProposal);
+            await chaoschainService.propose(allianceProposal);
 
             elizaLogger.success("[ChaosChain] Alliance proposal submitted.");
             callback({
@@ -68,10 +73,5 @@ export const proposeAllianceAction: Action = {
             return false;
         }
     },
-    examples: [
-        [
-            { user: "{{user1}}", content: { text: "Form an alliance with these agents" } },
-            { user: "{{agent}}", content: { text: "Submitting alliance proposal...", action: "CHAOSCHAIN_PROPOSE_ALLIANCE" } },
-        ],
-    ] as ActionExample[][],
+    examples: proposeAllianceExamples as ActionExample[][],
 } as Action;

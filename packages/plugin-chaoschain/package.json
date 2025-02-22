@@ -1,6 +1,6 @@
 {
-    "name": "@elizaos/chaoschain-plugin",
-    "version": "0.25.6-alpha.1",
+    "name": "@elizaos/plugin-choaschain",
+    "version": "0.1.8+build.1",
     "type": "module",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -9,7 +9,6 @@
         "./package.json": "./package.json",
         ".": {
             "import": {
-                "@elizaos/source": "./src/index.ts",
                 "types": "./dist/index.d.ts",
                 "default": "./dist/index.js"
             }
@@ -20,23 +19,19 @@
     ],
     "dependencies": {
         "@elizaos/core": "workspace:*",
-        "@ref-finance/ref-sdk": "^1.4.6",
-        "bignumber.js": "9.1.2",
-        "near-api-js": "5.0.1",
-        "node-cache": "5.1.2",
+        "axios": "^1.7.9",
         "tsup": "8.3.5",
         "zod": "^3.22.4"
     },
     "scripts": {
-        "build": "tsup --format esm,cjs --dts",
-        "test": "vitest run",
-        "test:watch": "vitest"
+        "build": "tsup --format esm --dts",
+        "dev": "tsup --format esm --dts --watch",
+        "lint": "eslint --fix  --cache ."
     },
     "peerDependencies": {
-        "form-data": "4.0.1",
         "whatwg-url": "7.1.0"
     },
-    "publishConfig": {
-        "access": "public"
+    "devDependencies": {
+        "@types/node": "^20.0.0"
     }
 }
