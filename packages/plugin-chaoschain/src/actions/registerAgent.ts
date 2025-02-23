@@ -6,10 +6,14 @@ import {
     IAgentRuntime,
     Memory,
     State,
+    UUID,
 } from "@elizaos/core";
 import { validateChaoschainConfig } from "../environment";
 import { registerAgentService } from "../services";
-import { registerAgentExamples } from "../examples";
+import { registerAgentExamples } from "../examples/actionExamples";
+import { generateDeterministicUUID, generateUUID } from "../utils/uuid";
+
+let counter = 0;
 
 export const registerAgentAction: Action = {
     name: "CHAOSCHAIN_REGISTER_AGENT",
@@ -32,7 +36,20 @@ export const registerAgentAction: Action = {
         try {
             const response = await chaoschainService.register();
 
-            elizaLogger.success("[ChaosChain] Agent registered successfully.", response);
+            elizaLogger.success(
+                "[ChaosChain] Agent registered successfully.",
+                response
+            );
+
+            // set the registered agent on eliza cache
+            await runtime.cacheManager.set(
+                message.roomId,
+                JSON.stringify({
+                    agent_id: response.agent_id,
+                    agent_token: response.token,
+                })
+            );
+
             callback({
                 text: `Agent ${response.agent_id} successfully registered on ChaosChain with token ${response.token}!`,
             });
