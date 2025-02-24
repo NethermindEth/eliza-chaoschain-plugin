@@ -9,7 +9,7 @@ import {
 } from "@elizaos/core";
 import { validateChaoschainConfig } from "../environment";
 import { validateBlockService } from "../services";
-import { validateBlockExamples } from "../examples";
+import { validateBlockExamples } from "../examples/actionExamples";
 import { BlockValidationDecision } from "../types";
 
 export const validateBlockAction: Action = {
@@ -37,10 +37,14 @@ export const validateBlockAction: Action = {
             return false;
         }
 
-        const agentId = runtime.getSetting("CHAOSCHAIN_AGENT_ID");
-        const token = runtime.getSetting("CHAOSCHAIN_AGENT_TOKEN");
+        const memories = await runtime.messageManager.getMemoriesByRoomIds({
+            roomIds: [message.roomId],
+            limit: 1,
+        });
 
-        if (!agentId || !token) {
+        const { agent_id, agent_token } = JSON.parse(memories[0].content.text);
+
+        if (!agent_id || !agent_token) {
             callback({ text: "Agent credentials are missing. Register the agent first." });
             return false;
         }

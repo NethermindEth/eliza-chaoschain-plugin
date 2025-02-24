@@ -14,7 +14,6 @@ export async function validateChaoschainConfig(
         const config = {
             OPENAI_API_KEY: runtime.getSetting("OPENAI_API_KEY"),
         };
-        console.log('config: ', config)
         return chaoschainEnvSchema.parse(config);
     } catch (error) {
         console.log("error::::", error)
