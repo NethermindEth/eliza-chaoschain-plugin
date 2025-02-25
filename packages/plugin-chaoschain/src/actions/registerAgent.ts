@@ -60,35 +60,37 @@ export const registerAgentAction: Action = {
             currentState = await runtime.updateRecentMessageState(currentState);
         }
 
-        // const agentContext = composeContext({
-        //     state: currentState,
-        //     template: registerChaosAgentTemplate,
-        // });
+        const agentContext = composeContext({
+            state: currentState,
+            template: registerChaosAgentTemplate,
+        });
 
-        // const generatedParams = await generateObject({
-        //     runtime,
-        //     context: agentContext,
-        //     modelClass: ModelClass.LARGE,
-        //     schema: RegisterAgentSchema,
-        // });
-
-        // if (!isRegisterAgentContent(generatedParams.object)) {
-        //     elizaLogger.error("Invalid registration data format received");
-        //     if (callback)
-        //       callback({ text: "Invalid registration data format received" });
-        //     return false;
-        // }
-      
-        // const result = generatedParams.object;
 
         try {
-            const response = await chaoschainService.register();
-
+            const generatedParams = await generateObject({
+                runtime,
+                context: agentContext,
+                modelClass: ModelClass.LARGE,
+                schema: RegisterAgentSchema,
+            });
+    
+            // If the generated data does not match our schema,
+            // do not pass any payload (so that the default is used)
+            let agentData: Record<string, unknown> | undefined;
+            if (isRegisterAgentContent(generatedParams.object)) {
+                agentData = generatedParams.object;
+            } else {
+                // Log a warning instead of an error so that registration continues.
+                elizaLogger.warn("Registration data format does not match. Using default registration payload.");
+            }
+          
+            const response = await chaoschainService.register(agentData);
+    
             elizaLogger.success(
                 "[ChaosChain] Agent registered successfully.",
                 response
             );
-
+    
             // set the registered agent on eliza cache
             await runtime.cacheManager.set(
                 message.roomId,
@@ -97,7 +99,7 @@ export const registerAgentAction: Action = {
                     agent_token: response.token,
                 })
             );
-
+    
             callback({
                 text: `Agent ${response.agent_id} successfully registered on ChaosChain with token ${response.token}!`,
             });
