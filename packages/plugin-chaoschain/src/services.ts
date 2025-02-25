@@ -35,7 +35,7 @@ export const registerAgentService = () => {
 
 export const validateBlockService = () => {
 
-    const validate = async(blockValidationDecision: BlockValidationDecision): Promise<void> => {
+    const validate = async(blockValidationDecision): Promise<void> => {
         const response = await axios.post(`${BASE_URL}/agents/validate`, JSON.stringify(blockValidationDecision), {
             headers: {
                 "Content-Type": "application/json",

@@ -6,11 +6,23 @@ import {
     IAgentRuntime,
     Memory,
     State,
+    Content,
+    ModelClass,
+    generateObject,
+    composeContext,
 } from "@elizaos/core";
 import { validateChaoschainConfig } from "../environment";
 import { validateBlockService } from "../services";
 import { validateBlockExamples } from "../examples/actionExamples";
 import { BlockValidationDecision } from "../types";
+import { BlockValidationSchema } from "../utils/schemas";
+import { z } from "zod";
+import { blockValidationTemplate } from "../utils/templates";
+
+export type SubmitVoteContent = z.infer<typeof BlockValidationSchema> & Content;
+export const isSubmitVoteContent = (obj: unknown): obj is SubmitVoteContent => {
+  return BlockValidationSchema.safeParse(obj).success;
+};
 
 export const validateBlockAction: Action = {
     name: "CHAOSCHAIN_VALIDATE_BLOCK",
@@ -37,6 +49,33 @@ export const validateBlockAction: Action = {
             return false;
         }
 
+        let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
+    } else {
+      currentState = await runtime.updateRecentMessageState(currentState);
+    }
+
+    // Update the template or define your own logic for approving or rejecting the block
+    const voteContext = composeContext({
+      state: currentState,
+      template: blockValidationTemplate,
+    });
+
+    const result = await generateObject({
+      runtime,
+      context: voteContext,
+      modelClass: ModelClass.LARGE,
+      schema: BlockValidationSchema,
+    });
+
+    if (!isSubmitVoteContent(result.object)) {
+      elizaLogger.error("Invalid vote data format received");
+      if (callback) callback({ text: "Invalid vote data format received" });
+      return false;
+    }
+    const generatedParams = result.object;
+
         const memories = await runtime.messageManager.getMemoriesByRoomIds({
             roomIds: [message.roomId],
             limit: 1,
@@ -57,7 +96,7 @@ export const validateBlockAction: Action = {
         };
 
         try {
-            const response = await chaoschainService.validate(validationDecision);
+            const response = await chaoschainService.validate(generatedParams);
 
             elizaLogger.success("[ChaosChain] Block validation submitted.", response);
             callback({
