@@ -28,8 +28,7 @@
         "@elizaos/client-auto": "workspace:*",
         "@elizaos/client-direct": "workspace:*",
         "@elizaos/client-discord": "workspace:*",
-        "@elizaos/chaoschain-plugin": "workspace:*",
-        "@elizaos/plugin-chaoschain": "workspace:*",
+        "@elizaos/plugin-chaoschain": "../packages/plugin-chaoschain",
         "@elizaos/client-farcaster": "workspace:*",
         "@elizaos/client-lens": "workspace:*",
         "@elizaos/client-telegram": "workspace:*",
@@ -164,5 +163,10 @@
         "ts-jest": "^29.2.5",
         "ts-node": "10.9.2",
         "tsup": "8.3.5"
+    },
+    "pnpm": {
+        "overrides": {
+            "node-fetch": "2.6.7"
+        }
     }
 }

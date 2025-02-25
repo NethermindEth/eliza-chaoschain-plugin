@@ -13,15 +13,19 @@ const LLM_URL = "http://localhost:1234/api";
 
 export const registerAgentService = () => {
 
-    const register = async(): Promise<ChaosAgentResponse> => {
-        const payload = {
+    const register = async(agentDetails?: Record<string, unknown>): Promise<ChaosAgentResponse> => {
+        const defaultPayload = {
             name: "DramaLlama",
             personality: ["sassy", "dramatic", "meme-loving"],
             style: "chaotic",
             stake_amount: 1000,
             role: "validator"
         }
-        const response = await axios.post(`${BASE_URL}/agents/register`, JSON.stringify(payload), {
+
+        // If agentDetails is provided, use it as the payload; otherwise, use defaultPayload
+        const actualPayload = agentDetails ? agentDetails : defaultPayload;
+        
+        const response = await axios.post(`${BASE_URL}/agents/register`, JSON.stringify(actualPayload), {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
@@ -35,7 +39,7 @@ export const registerAgentService = () => {
 
 export const validateBlockService = () => {
 
-    const validate = async(blockValidationDecision: BlockValidationDecision): Promise<void> => {
+    const validate = async(blockValidationDecision): Promise<void> => {
         const response = await axios.post(`${BASE_URL}/agents/validate`, JSON.stringify(blockValidationDecision), {
             headers: {
                 "Content-Type": "application/json",

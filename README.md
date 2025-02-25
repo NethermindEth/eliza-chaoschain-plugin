@@ -40,31 +40,21 @@ pnpm  i && pnpm  build && pnpm  start
 
 ```
 
-### Start the Client
+### Start the Web Client
 While eliza plugin is running, open another terminal
 
 ```bash
 pnpm start:client
 ```  
 
-### Start the LLM Server for message parsing
-```bash
-cd llm_server
-pip install -r requirements.txt
-uvicorn server:app --host 0.0.0.0 --port 1234
-```
 ### Interact via Browser
 
 Make sure your chaoschain is running and now you can go to `http://localhost:5173/` in your browser.
   
 ---
 
- 
-
-  
-
 ### Modify Character
 
-Open `agent/src/mainCharacter.ts` to modify the main character of chaoschain agent
+Open `agent/src/character.ts` to modify or add the character of chaoschain agent
 
   
