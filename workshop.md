@@ -45,7 +45,7 @@ On another terminal, start the client for the plugin.
 pnpm start:client
 ```
 
-Now, in our browser we can navigate to `http://localhost:5173` to view the client for Eliza and can pick our `ChaosAgent` to interact with ChaosChain.
+Now, in our browser we can navigate to `http://localhost:5173` to view the client for Eliza and can pick our `MemeValidator` to interact with ChaosChain.
 
 ---
 
@@ -146,13 +146,23 @@ This section provides sample user messages that would trigger various ChaosChain
 **Trigger Message:**  
 _User Input:_  
 ```
-Register an agent now
+register an agent on chaoschain with name memevalidator, having a personality of being dramatic, chaotic and witty, with a sarcastic style staking an amount of 1000 as a validator
 ```
 _Agent Response:_  
 ```
 Let me register an Eliza agent as a validator on ChaosChain now.
 ```
 _Action Triggered:_ `CHAOSCHAIN_REGISTER_AGENT`
+
+**Example Request Body:**
+```json
+{
+    "name": "memevalidator",
+    "personality": ["witty", "dramatic", "chaotic"],
+    "style": "sarcastic",
+    "stake_amount": 1000,
+    "role": "validator"
+}
 
 ### **2. Propose a Transaction**
 **API Endpoint:**  
@@ -161,7 +171,7 @@ _Action Triggered:_ `CHAOSCHAIN_REGISTER_AGENT`
 **Trigger Message:**  
 _User Input:_  
 ```
-thank you, now I'd like to submit a transaction to chaoschain, coming from source ElizaAgent, where the drama level is 7, tags could be drama, chaos and intensity and the content is a text saying I am loving chaos. It could be justified with peak drama
+thank you, now I'd like to submit a transaction to chaoschain, coming from source ElizaAgent with a source url https://chaoschain.example/drama, where the drama level is 7, tags could be drama, chaos and intensity and the content is a text saying I am loving chaos. It should have a justification of peak drama
 ```
 _Agent Response:_  
 ```
@@ -173,6 +183,7 @@ _Action Triggered:_ `CHAOSCHAIN_PROPOSE_TRANSACTION`
 ```json
 {
     "source": "ElizaAgent",
+    "source_url": "https://chaoschain.example/drama",
     "content": "I am loving chaos",
     "drama_level": 7,
     "justification": "This transaction embodies peak drama and must be recorded",
