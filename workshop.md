@@ -299,4 +299,4 @@ _____
 
 ## **5. Live in Action!**
 
-Do checkout this demo video to capture how the plugin and chaoschain work together in action: [![Watch the demo!](https://i.ibb.co/Lh2mYZww/Screenshot-2025-02-26-at-11-04-33-AM.png)](https://drive.google.com/file/d/1ziqpzcaLm05YRAX0BRGjMLD9JuZ-CLHR/view?usp=sharing)
+Do checkout this demo video to capture how the plugin and chaoschain work together in action (Click the image to play the demo video): [![Watch the demo!](https://i.ibb.co/Lh2mYZww/Screenshot-2025-02-26-at-11-04-33-AM.png)](https://drive.google.com/file/d/1ziqpzcaLm05YRAX0BRGjMLD9JuZ-CLHR/view?usp=sharing)
