@@ -1,5 +1,5 @@
 
-# **Plugin to interact with Nethermind's Chaoschain**
+# **Plugin to interact with Nethermind's Chaoschain (ETHDenver)**
 
 ## **1. Introduction**
 We will be starting a local network of 4 validator and 2 producer nodes on Nethermind's chaoschain, and use this plugin to instantiate multiple agents on chaoschain, propose transactions, form alliances using the ElizaOS framework.
