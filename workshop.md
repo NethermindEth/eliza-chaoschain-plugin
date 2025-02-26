@@ -1,3 +1,4 @@
+
 # **Plugin to interact with Nethermind's Chaoschain**
 
 ## **1. Introduction**
@@ -41,10 +42,11 @@ The web client to visualise changing states of chaoschain can be accessed now at
 On another terminal, start the client for the plugin.
 
 ```bash
-    pnpm start:client
+pnpm start:client
 ```
 
 Now, in our browser we can navigate to `http://localhost:5173` to view the client for Eliza and can pick our `ChaosAgent` to interact with ChaosChain.
+
 ---
 
 ## **4. ChaosChain API**
