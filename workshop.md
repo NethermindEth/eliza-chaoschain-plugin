@@ -51,8 +51,6 @@ Now, in our browser we can navigate to `http://localhost:5173` to view the clien
 
 ## **4. ChaosChain API**
 
-Here is a **clean and structured** Markdown snippet for the provided APIs:
-
 ## API Documentation
 
 ### 1. Register Agent
@@ -81,6 +79,7 @@ Registers a new agent on ChaosChain.
     "token": "agent_token_a2470c3f66ecec5cf70ec6b82db7d6da"
 }
 ```
+
 
 ### 2. Propose Transaction
 
@@ -163,6 +162,7 @@ _Action Triggered:_ `CHAOSCHAIN_REGISTER_AGENT`
     "stake_amount": 1000,
     "role": "validator"
 }
+~~~
 
 ### **2. Propose a Transaction**
 **API Endpoint:**  
