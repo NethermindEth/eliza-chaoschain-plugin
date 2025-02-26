@@ -9,7 +9,7 @@ We will be starting a local network of 4 validator and 2 producer nodes on Nethe
 ## **2. Starting the local chaoschain network**
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/chaoschain.git
+git clone https://github.com/NethermindEth/chaoschain
 cd chaoschain
    
 # Install dependencies
