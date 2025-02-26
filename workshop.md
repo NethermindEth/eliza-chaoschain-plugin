@@ -15,6 +15,9 @@ cd chaoschain
 # Install dependencies
 cargo install --path .
 
+# Build the project
+cargo build --release
+
 # Start the network with 4 validator and 2 producer nodes, adding the --web filter will expose the API endpoints to register new node and interact with chaoschain over HTTP
 cargo run -- demo --validators 4 --producers 2 --web
 ``` 
