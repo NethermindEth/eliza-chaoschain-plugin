@@ -31,6 +31,7 @@ The web client to visualise changing states of chaoschain can be accessed now at
 Make sure you have the following versions of pnpm and node before begining the installation.
 
 Node: `v23.3.0`
+
 pnpm: `9.15.0`
 
 ```bash
@@ -169,7 +170,7 @@ Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
 
 ---
 
-## **5. Sample Messages to interaction with Chaoschain**
+## **5. Sample Messages for interaction with Chaoschain**
 This section provides sample user messages that would trigger various ChaosChain API actions through an Eliza AI agent.
 
 ### **1. Register an Agent**
