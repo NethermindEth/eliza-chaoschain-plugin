@@ -21,7 +21,7 @@ import { blockValidationTemplate } from "../utils/templates";
 
 export type SubmitVoteContent = z.infer<typeof BlockValidationSchema> & Content;
 export const isSubmitVoteContent = (obj: unknown): obj is SubmitVoteContent => {
-  return BlockValidationSchema.safeParse(obj).success;
+    return BlockValidationSchema.safeParse(obj).success;
 };
 
 export const validateBlockAction: Action = {
@@ -36,71 +36,70 @@ export const validateBlockAction: Action = {
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
-        _options: { block: any },
+        _options: { [key: string]: unknown },
         callback: HandlerCallback
     ) => {
         const config = await validateChaoschainConfig(runtime);
         const chaoschainService = validateBlockService();
 
-        const { block } = _options as { block?: any; };
-
-        if (!block) {
-            callback({ text: "No block data provided for validation." });
-            return false;
+        let currentState = state;
+        if (!currentState) {
+            currentState = await runtime.composeState(message);
+        } else {
+            currentState = await runtime.updateRecentMessageState(currentState);
         }
 
-        let currentState = state;
-    if (!currentState) {
-      currentState = await runtime.composeState(message);
-    } else {
-      currentState = await runtime.updateRecentMessageState(currentState);
-    }
-
-    // Update the template or define your own logic for approving or rejecting the block
-    const voteContext = composeContext({
-      state: currentState,
-      template: blockValidationTemplate,
-    });
-
-    const result = await generateObject({
-      runtime,
-      context: voteContext,
-      modelClass: ModelClass.LARGE,
-      schema: BlockValidationSchema,
-    });
-
-    if (!isSubmitVoteContent(result.object)) {
-      elizaLogger.error("Invalid vote data format received");
-      if (callback) callback({ text: "Invalid vote data format received" });
-      return false;
-    }
-    const generatedParams = result.object;
-
-        const memories = await runtime.messageManager.getMemoriesByRoomIds({
-            roomIds: [message.roomId],
-            limit: 1,
+        // Update the template or define your own logic for approving or rejecting the block
+        const voteContext = composeContext({
+            state: currentState,
+            template: blockValidationTemplate,
         });
 
-        const { agent_id, agent_token } = JSON.parse(memories[0].content.text);
+        const result = await generateObject({
+            runtime,
+            context: voteContext,
+            modelClass: ModelClass.LARGE,
+            schema: BlockValidationSchema,
+        });
+
+        if (!isSubmitVoteContent(result.object)) {
+            elizaLogger.error("Invalid vote data format received");
+            if (callback)
+                callback({ text: "Invalid vote data format received" });
+            return false;
+        }
+        const generatedParams = result.object;
+
+        const { agent_id, agent_token } = JSON.parse(
+            await runtime.cacheManager.get(message.roomId)
+        );
+
+        console.log("AGENT DETAILS", agent_id, agent_token);
 
         if (!agent_id || !agent_token) {
-            callback({ text: "Agent credentials are missing. Register the agent first." });
+            callback({
+                text: "Agent credentials are missing. Register the agent first.",
+            });
             return false;
         }
 
-        const validationDecision: BlockValidationDecision = {
-            block_id: block.block_id,
-            approved: block.drama_level > 5, // Approve if drama is high enough
-            reason: block.drama_level > 5 ? "This block is full of drama! ✅" : "Not dramatic enough. ❌",
-            drama_level: Math.min(block.drama_level + 1, 10), // Increase drama slightly
-        };
+        // const validationDecision: BlockValidationDecision = {
+        //     block_id: block.block_id,
+        //     approved: block.drama_level > 5, // Approve if drama is high enough
+        //     reason: block.drama_level > 5 ? "This block is full of drama! ✅" : "Not dramatic enough. ❌",
+        //     drama_level: Math.min(block.drama_level + 1, 10), // Increase drama slightly
+        // };
 
         try {
-            const response = await chaoschainService.validate(generatedParams);
+            elizaLogger.info("payload", generatedParams)
+            const response = await chaoschainService.validate(generatedParams, agent_id, agent_token);
 
-            elizaLogger.success("[ChaosChain] Block validation submitted.", response);
+            elizaLogger.success(
+                "[ChaosChain] Block validation submitted.",
+                response
+            );
             callback({
-                text: `Block ${block?.block_id} validation decision submitted!`,
+                text: `Block ${generatedParams?.block_id} validation decision submitted!`,
             });
             return true;
         } catch (error: any) {

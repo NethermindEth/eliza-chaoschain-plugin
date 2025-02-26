@@ -93,7 +93,7 @@ export const proposeAllianceAction: Action = {
             //     drama_commitment: 6,
             // };
 
-            await chaoschainService.propose(result.object);
+            await chaoschainService.propose(result.object, agent_id, agent_token);
 
             elizaLogger.success("[ChaosChain] Alliance proposal submitted.");
             callback({

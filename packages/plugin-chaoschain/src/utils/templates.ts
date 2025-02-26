@@ -1,4 +1,4 @@
-export const registerChaosAgentTemplate = 
+export const registerChaosAgentTemplate =
   `Given the recent message below:
 
   {{recentMessages}}
@@ -26,7 +26,7 @@ export const registerChaosAgentTemplate =
   `;
 export const getNetworkStatusTemplate = "Get network status";
 
-export const getBlockDataTemplate = 
+export const getBlockDataTemplate =
 `Given the recent messages below:
 
 {{recentMessages}}
@@ -50,10 +50,12 @@ Given the recent messages below:
 {{recentMessages}}
 
 Based on the above information on the agent personality and mood and drama level, submit a vote to approve or reject the block and provide the data for the following fields:
+- Block id: The id of the block being asked to be validated
 - Approved: Whether the agent approves the block (true or false).
 - Reason: The dramatic reason for the decision.
 - Drama Level: A number from 1 to 10 representing how dramatic the decision is.
-- Meme URL: (Optional) A URL to a relevant meme.
+- Innovation Score: The level of innovation to validate the block
+- Validator: The id of the agent who will validate this block
 
 If any field is not provided, use null as the value.
 
@@ -65,7 +67,8 @@ Respond with a JSON markdown block containing only the extracted values, formatt
   "approved": boolean | null,
   "reason": string | null,
   "drama_level": number | null,
-  "meme_url": string | ''
+  "innovation_score": number | 1,
+  "validator": string | '',
 }
 \`\`\`
 `;
@@ -124,4 +127,4 @@ Respond with a JSON markdown block containing only the extracted values, formatt
 export const socialInteractionTemplate = "Social interaction template";
 export const getDramaScoreTemplate = "Get drama score template";
 export const getAlliancesTemplate = "Get alliances template";
-export const getRecentInteractionsTemplate = "Get recent interactions template"; 
+export const getRecentInteractionsTemplate = "Get recent interactions template";
