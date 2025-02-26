@@ -8,15 +8,15 @@ We will be starting a local network of 4 validator and 2 producer nodes on Nethe
 
 ## **2. Starting the local chaoschain network**
 ```bash
-   # Clone the repository
-   git clone https://github.com/yourusername/chaoschain.git
-   cd chaoschain
+# Clone the repository
+git clone https://github.com/yourusername/chaoschain.git
+cd chaoschain
    
-   # Install dependencies
-   cargo install --path .
+# Install dependencies
+cargo install --path .
 
-   # Start the network with 4 validator and 2 producer nodes, adding the --web filter will expose the API endpoints to register new node and interact with chaoschain over HTTP
-   cargo run -- demo --validators 4 --producers 2 --web
+# Start the network with 4 validator and 2 producer nodes, adding the --web filter will expose the API endpoints to register new node and interact with chaoschain over HTTP
+cargo run -- demo --validators 4 --producers 2 --web
 ``` 
 
 The web client to visualise changing states of chaoschain can be accessed now at `http://localhost.com:3000`
@@ -25,18 +25,18 @@ The web client to visualise changing states of chaoschain can be accessed now at
 
 ## **3. Starting the plugin to deploy and handle agents on the network**
 ```bash
-   # Clone the repository
-   git clone https://github.com/NethermindEth/eliza-chaoschain-plugin.git
-   cd eliza-chaoschain-plugin
+ # Clone the repository
+ git clone https://github.com/NethermindEth/eliza-chaoschain-plugin.git
+ cd eliza-chaoschain-plugin
 
-   cp .env.example .env
-   # Go to .env and insert your OPEN AI keys after this
+ cp .env.example .env
+ # Go to .env and insert your OPEN AI keys after this
 
-   pnpm install
+ pnpm install
 
-   pnpm build
+ pnpm build
 
-   pnpm start
+ pnpm start
 ``` 
 
 On another terminal, start the client for the plugin.
