@@ -6,11 +6,18 @@ import {
     IAgentRuntime,
     Memory,
     State,
+    generateObject,
+    ModelClass,
+    composeContext,
+    Content,
 } from "@elizaos/core";
 import { validateChaoschainConfig } from "../environment.ts";
 import { proposeTransactionService } from "../services.ts";
 import { proposeTransactionExamples } from "../examples/actionExamples.ts";
 import { TransactionProposal } from "../types.ts";
+import { ProposeBlockSchema } from "../utils/schemas.ts";
+import { proposeBlockTemplate } from "../utils/templates.ts";
+import { z } from "zod";
 
 const returnPrompt = (text: string): string => `
         Analyze the following chat conversation and extract the following predefined variables:
@@ -45,6 +52,14 @@ const returnPrompt = (text: string): string => `
         2. The response shall never begin with the string <json>
         `;
 
+
+export type ProposeBlockContent = z.infer<typeof ProposeBlockSchema> & Content;
+export const isProposeBlockContent = (
+    obj: unknown
+): obj is ProposeBlockContent => {
+    return ProposeBlockSchema.safeParse(obj).success;
+};
+
 export const proposeTransactionAction: Action = {
     name: "CHAOSCHAIN_PROPOSE_TRANSACTION",
     similes: ["TRANSACTION", "PROPOSE CONTENT", "CHAOSCHAIN"],
@@ -64,14 +79,24 @@ export const proposeTransactionAction: Action = {
         const config = await validateChaoschainConfig(runtime);
         const chaoschainService = proposeTransactionService();
 
-        const text = message.content.text.toLowerCase();
+        let currentState = state;
+        if (!currentState) {
+            currentState = await runtime.composeState(message);
+        } else {
+            currentState = await runtime.updateRecentMessageState(currentState);
+        }
 
-        const prompt = returnPrompt(text);
-        const transactionProposal = (await chaoschainService.callLLM(
-            prompt
-        )) as TransactionProposal;
+        const blockContext = composeContext({
+            state: currentState,
+            template: proposeBlockTemplate,
+        });
 
-        console.log("Transaction from chat", transactionProposal);
+        const result = await generateObject({
+        runtime,
+        context: blockContext,
+        modelClass: ModelClass.LARGE,
+        schema: ProposeBlockSchema,
+        });
 
         const { agent_id, agent_token } = JSON.parse(
             await runtime.cacheManager.get(message.roomId)
@@ -96,7 +121,7 @@ export const proposeTransactionAction: Action = {
             // };
 
             await chaoschainService.propose(
-                transactionProposal,
+                result.object,
                 agent_id,
                 agent_token
             );

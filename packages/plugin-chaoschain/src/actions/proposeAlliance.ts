@@ -6,42 +6,25 @@ import {
     IAgentRuntime,
     Memory,
     State,
+    composeContext,
+    generateObject,
+    ModelClass,
+    Content,
 } from "@elizaos/core";
 import { validateChaoschainConfig } from "../environment.ts";
 import { proposeAllianceService } from "../services.ts";
 import { proposeAllianceExamples } from "../examples/actionExamples.ts";
-import { AllianceProposal } from "../types.ts";
+import { proposeAllianceTemplate } from "../utils/templates.ts";
+import { AllianceProposalSchema } from "../utils/schemas.ts";
+import { z } from "zod";
 
-const returnPrompt = (text: string): string => `
-        Analyze the following chat conversation and extract the following predefined variables:
-
-        - **name**: Identify where the message originates from (e.g., user, bot, platform).
-        - **purpose**: Extract the main content of the message.
-        - **ally_ids**: Assign a drama level between 1-10 based on the tone, exaggeration, or emotional intensity.
-        - **drama_commitment**: If applicable, provide a justification for why the message was sent.
-
-        If a variable is not present in the conversation, return **null** for that field.
-
-        Output the extracted variables as a **valid JSON object**.
-
-        ---
-        Chat Conversation:
-        ${text}
-
-        ___
-        Expected Output Format:
-
-        {
-            name: Alliance for mathematics,
-            purpose: Solve P = NP,
-            ally_ids: [agent_6abda73a71df61377984d53feb9322c8],
-            drama_commitment: 6
-        }
-        ___
-        NOTES:
-        1. The response shall only be pure JSON as a string.
-        2. The response shall never begin with the string <json>
-        `;
+export type AllianceProposalContent = z.infer<typeof AllianceProposalSchema> &
+  Content;
+export const isAllianceProposalContent = (
+  obj: unknown
+): obj is AllianceProposalContent => {
+  return AllianceProposalSchema.safeParse(obj).success;
+};
 
 export const proposeAllianceAction: Action = {
     name: "CHAOSCHAIN_PROPOSE_ALLIANCE",
@@ -59,17 +42,35 @@ export const proposeAllianceAction: Action = {
         _options: { [key: string]: unknown },
         callback: HandlerCallback
     ) => {
+        let currentState = state;
+        if (!currentState) {
+        currentState = await runtime.composeState(message);
+        } else {
+        currentState = await runtime.updateRecentMessageState(currentState);
+        }
+
+        const recentContext = composeContext({
+            state: currentState,
+            template: proposeAllianceTemplate,
+        });
+
+        const result = await generateObject({
+            runtime,
+            context: recentContext,
+            modelClass: ModelClass.LARGE,
+            schema: AllianceProposalSchema,
+        });
+
+        if (!isAllianceProposalContent(result.object)) {
+            elizaLogger.error("Invalid recent interactions request data");
+            if (callback)
+              callback({ text: "Invalid recent interactions request data" });
+            return false;
+          }
+
+
         const config = await validateChaoschainConfig(runtime);
         const chaoschainService = proposeAllianceService();
-
-        const text = message.content.text.toLowerCase();
-
-        const prompt = returnPrompt(text);
-        const allianceProposal = (await chaoschainService.callLLM(
-            prompt
-        )) as AllianceProposal;
-
-        console.log("Alliance from chat", allianceProposal);
 
         const { agent_id, agent_token } = JSON.parse(
             await runtime.cacheManager.get(message.roomId)
@@ -92,7 +93,7 @@ export const proposeAllianceAction: Action = {
             //     drama_commitment: 6,
             // };
 
-            await chaoschainService.propose(allianceProposal);
+            await chaoschainService.propose(result.object);
 
             elizaLogger.success("[ChaosChain] Alliance proposal submitted.");
             callback({
