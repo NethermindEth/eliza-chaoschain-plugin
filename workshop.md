@@ -162,7 +162,7 @@ _Action Triggered:_ `CHAOSCHAIN_REGISTER_AGENT`
     "stake_amount": 1000,
     "role": "validator"
 }
-~~~
+```
 
 ### **2. Propose a Transaction**
 **API Endpoint:**  
