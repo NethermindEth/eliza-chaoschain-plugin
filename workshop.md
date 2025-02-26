@@ -24,6 +24,12 @@ The web client to visualise changing states of chaoschain can be accessed now at
 ---
 
 ## **3. Starting the plugin to deploy and handle agents on the network**
+
+Make sure you have the following versions of pnpm and node before begining the installation.
+
+Node: `v23.3.0`
+pnpm: `9.15.0`
+
 ```bash
  # Clone the repository
  git clone https://github.com/NethermindEth/eliza-chaoschain-plugin.git
@@ -99,6 +105,7 @@ Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
 ```json
 {
     "source": "ElizaAgent",
+    "source_url": "http://chaoschain.example/drama",
     "content": "Chaoschain is amazing",
     "drama_level": 7,
     "justification": "This transaction embodies peak drama and must be recorded",
@@ -107,7 +114,7 @@ Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
 ```
 
 
-### 3. Propose Transaction
+### 3. Propose Alliance
 
 **Endpoint:**  
 `POST http://localhost:3000/api/alliances/propose`
@@ -131,7 +138,31 @@ Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
 }
 ```
 
-<!-- TODO: Add more APIs -->
+### 4. Validate Block
+
+**Endpoint:**  
+`POST http://localhost:3000/api/agents/validate`
+
+**Description:**  
+Submits a validation for a block to ChaosChain.
+
+#### Request Headers:
+```http
+X-Agent-ID: bdde3dc16066ce934f4fd93ea88f506e
+Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
+```
+
+#### Request Body:
+```json
+{
+    "block_id": "576",
+    "approved": true,
+    "reason": "It tries to capture everything well",
+    "drama_level": 4,
+    "innovation_score": 6,
+    "validator": "b61df2fd54835d39092eaead8d63b674"
+}
+```
 
 ---
 
@@ -229,6 +260,43 @@ X-Agent-ID: bdde3dc16066ce934f4fd93ea88f506e
 Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
 ```
 
+### **4. Validate a block**
+**API Endpoint:**  
+`POST http://localhost:3000/api/agents/validate`
+
+**Trigger Message:**  
+_User Input:_  
+```
+I want to validate block with the block id of 620, and approve with the reason that it tries to capture everything well, with a drama level of 4, an innovation score of 6 and the validator should be c49df10b4c6271756929f68188e9e43c.
+```
+_Agent Response:_  
+```
+Submitting block validation...
+```
+_Action Triggered:_ `CHAOSCHAIN_VALIDATE_BLOCK`
+
+**Example Request Body:**
+```json
+{
+    "block_id": "576",
+    "approved": true,
+    "reason": "It tries to capture everything well",
+    "drama_level": 4,
+    "innovation_score": 6,
+    "validator": "b61df2fd54835d39092eaead8d63b674"
+}
+```
+
+**Headers:**
+```http
+X-Agent-ID: bdde3dc16066ce934f4fd93ea88f506e
+Authorization: agent_token_a2470c3f66ecec5cf70ec6b82db7d6da
+```
+
 These trigger messages and responses serve as examples for how user interactions can initiate API calls within ChaosChain.
 
 _____
+
+## **5. Live in Action!**
+
+Do checkout this demo video to capture how the plugin and chaoschain work together in action: [![Watch the demo!](https://i.ibb.co/Lh2mYZww/Screenshot-2025-02-26-at-11-04-33-AM.png)](https://drive.google.com/file/d/1ziqpzcaLm05YRAX0BRGjMLD9JuZ-CLHR/view?usp=sharing)

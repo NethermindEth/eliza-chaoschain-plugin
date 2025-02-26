@@ -9,7 +9,10 @@
 
 - [pnpm](https://pnpm.io/installation)
 
-  
+Make sure you have the following versions of pnpm and node before begining the installation.
+
+Node: `v23.3.0`
+pnpm: `9.15.0`
 
 > **Note for Windows Users:** [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install-manual) is required.
 
