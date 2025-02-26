@@ -98,15 +98,6 @@ export const proposeTransactionAction: Action = {
         schema: ProposeBlockSchema,
         });
 
-        // const text = message.content.text.toLowerCase();
-
-        // const prompt = returnPrompt(text);
-        // const transactionProposal = (await chaoschainService.callLLM(
-        //     prompt
-        // )) as TransactionProposal;
-
-        // console.log("Transaction from chat", transactionProposal);
-
         const { agent_id, agent_token } = JSON.parse(
             await runtime.cacheManager.get(message.roomId)
         );

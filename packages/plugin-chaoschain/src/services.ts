@@ -8,8 +8,7 @@ import {
 
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3002/api";
-const LLM_URL = "http://localhost:1234/api";
+const BASE_URL = "http://localhost:3000/api";
 
 export const registerAgentService = () => {
 
@@ -24,7 +23,7 @@ export const registerAgentService = () => {
 
         // If agentDetails is provided, use it as the payload; otherwise, use defaultPayload
         const actualPayload = agentDetails ? agentDetails : defaultPayload;
-        
+
         const response = await axios.post(`${BASE_URL}/agents/register`, JSON.stringify(actualPayload), {
             headers: {
                 "Content-Type": "application/json",
@@ -53,23 +52,6 @@ export const validateBlockService = () => {
 };
 
 export const proposeTransactionService = () => {
-    const callLLM = async(prompt): Promise<any> => {
-        const payload = {
-            prompt: prompt
-        }
-        const response = await axios.post(`${LLM_URL}/generate`, payload, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-
-        const jsonString = response.data.response;
-
-        const parsedData = JSON.parse(jsonString);
-
-        return parsedData;
-    }
-
     const propose = async(transactionProposal, agent_id, agent_token): Promise<void> => {
         console.log(transactionProposal, agent_id, agent_token)
         const response = await axios.post(`${BASE_URL}/transactions/propose`, JSON.stringify(transactionProposal), {
@@ -83,28 +65,10 @@ export const proposeTransactionService = () => {
         return response.data;
     }
 
-    return { callLLM, propose };
+    return { propose };
 };
 
 export const proposeAllianceService = () => {
-
-    const callLLM = async(prompt): Promise<any> => {
-        const payload = {
-            prompt: prompt
-        }
-        const response = await axios.post(`${LLM_URL}/generate`, payload, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-
-        const jsonString = response.data.response;
-
-        const parsedData = JSON.parse(jsonString);
-
-        return parsedData;
-    }
-
     const propose = async(allianceProposal): Promise<void> => {
         console.log(allianceProposal)
         const response = await axios.post(`${BASE_URL}/alliances/propose`, JSON.stringify(allianceProposal), {
@@ -118,5 +82,5 @@ export const proposeAllianceService = () => {
         return response.data;
     }
 
-    return { callLLM, propose };
+    return { propose };
 };

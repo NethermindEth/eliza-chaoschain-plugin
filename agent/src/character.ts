@@ -1,7 +1,8 @@
 export const mainCharacter = {
   "name": "MemeValidator",
   "modelProvider": "openai",
-  "clients": ["direct", "auto", "telegram"],
+  "clients": ["direct", "auto", "telegram"], // should also work when telegram ain't a provided client
+//   "clients": ["direct", "auto"],
   "plugins": ["@elizaos/plugin-choaschain"],
   "pluginConfig": {
     "@chaoschain/plugin-chaoschain": {

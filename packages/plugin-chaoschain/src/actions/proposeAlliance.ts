@@ -67,19 +67,10 @@ export const proposeAllianceAction: Action = {
               callback({ text: "Invalid recent interactions request data" });
             return false;
           }
-      
+
 
         const config = await validateChaoschainConfig(runtime);
         const chaoschainService = proposeAllianceService();
-
-        // const text = message.content.text.toLowerCase();
-
-        // const prompt = returnPrompt(text);
-        // const allianceProposal = (await chaoschainService.callLLM(
-        //     prompt
-        // )) as AllianceProposal;
-
-        // console.log("Alliance from chat", allianceProposal);
 
         const { agent_id, agent_token } = JSON.parse(
             await runtime.cacheManager.get(message.roomId)
